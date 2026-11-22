@@ -1,0 +1,2920 @@
+<!DOCTYPE html>
+<html lang="ru" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>УчНейро — Про развитие и интерес!</title>
+
+    <!-- Шрифты Inter и Manrope -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Lucide Icons CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Конфигурация Tailwind -->
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Manrope', 'sans-serif'],
+                    },
+                    colors: {
+                        bg: '#121216',
+                        card: '#1E1E26',
+                        cardHover: '#252530',
+                        border: '#2E2E3A',
+                        accent: '#8B5CF6',
+                        accentDark: '#7C3AED',
+                        pinkAccent: '#EC4899',
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'fade-in': 'fadeIn 0.3s ease-out forwards',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-8px)' },
+                        },
+                        fadeIn: {
+                            '0%': { opacity: '0', transform: 'translateY(8px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Базовые стили и скроллбар */
+        body {
+            background-color: #121216;
+            color: #F3F4F6;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4, .font-display {
+            font-family: 'Manrope', sans-serif;
+        }
+
+        /* Кастомный скроллбар */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #121216;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #2E2E3A;
+            border-radius: 999px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #8B5CF6;
+        }
+
+        /* Градиенты бренда */
+        .brand-gradient {
+            background: linear-gradient(135deg, #A855F7 0%, #EC4899 100%);
+        }
+        .brand-gradient-hover:hover {
+            background: linear-gradient(135deg, #9333EA 0%, #DB2777 100%);
+        }
+        .brand-text-gradient {
+            background: linear-gradient(135deg, #C084FC 0%, #F472B6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .glass-panel {
+            background: rgba(30, 30, 38, 0.75);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid #2E2E3A;
+        }
+
+        /* Стили для контента ИИ */
+        .ai-prose h3, .ai-prose h4 {
+            font-weight: 700;
+            color: #E9D5FF;
+            margin-top: 0.75rem;
+            margin-bottom: 0.35rem;
+        }
+        .ai-prose ul, .ai-prose ol {
+            padding-left: 1.25rem;
+            margin-bottom: 0.5rem;
+            list-style-type: disc;
+        }
+        .ai-prose li {
+            margin-bottom: 0.25rem;
+        }
+        .ai-prose p {
+            margin-bottom: 0.5rem;
+            line-height: 1.6;
+        }
+        .ai-prose strong {
+            color: #FFFFFF;
+        }
+
+        /* Анимация точек загрузки */
+        .typing-dot {
+            animation: typingBounce 1.4s infinite ease-in-out both;
+        }
+        .typing-dot:nth-child(1) { animation-delay: -0.32s; }
+        .typing-dot:nth-child(2) { animation-delay: -0.16s; }
+        @keyframes typingBounce {
+            0%, 80%, 100% { transform: scale(0); }
+            40% { transform: scale(1); }
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col pb-20 md:pb-0 selection:bg-purple-500/30 selection:text-purple-200">
+
+    <!-- ==================== ШАПКА САЙТА (DESKTOP & MOBILE TOP) ==================== -->
+    <header class="sticky top-0 z-40 glass-panel border-b border-border/80">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
+            <!-- Логотип -->
+            <button onclick="navigateTo('home')" class="flex items-center gap-3 group focus:outline-none">
+                <div class="w-10 h-10 rounded-xl bg-card border border-purple-500/40 flex items-center justify-center shadow-lg shadow-purple-500/10 group-hover:scale-105 transition-transform">
+                    <!-- Векторный SVG-логотип единорога в академической шапочке -->
+                    <svg viewBox="0 0 64 64" class="w-8 h-8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <linearGradient id="uniGrad" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse">
+                                <stop stop-color="#A855F7"/>
+                                <stop offset="1" stop-color="#EC4899"/>
+                            </linearGradient>
+                            <linearGradient id="hornGrad" x1="10" y1="10" x2="30" y2="30" gradientUnits="userSpaceOnUse">
+                                <stop stop-color="#F5D0FE"/>
+                                <stop offset="1" stop-color="#C084FC"/>
+                            </linearGradient>
+                        </defs>
+                        <!-- Рог -->
+                        <path d="M22 23L8 8L27 18L22 23Z" fill="url(#hornGrad)" stroke="#E9D5FF" stroke-width="1.2" stroke-linejoin="round"/>
+                        <!-- Грива (задняя часть) -->
+                        <path d="M35 20C45 20 53 28 52 40C51 47 46 53 40 56C43 49 44 42 40 35C38 31 35 27 35 20Z" fill="url(#uniGrad)"/>
+                        <!-- Голова и шея единорога -->
+                        <path d="M23 22C26 18 33 18 38 23C42 27 44 35 42 44C40 50 37 55 34 58H21C23 50 24 44 21 39C18 38 14 38 12 35C10 32 12 28 16 26L23 22Z" fill="#F8FAFC" stroke="#1E1E26" stroke-width="1.5" stroke-linejoin="round"/>
+                        <!-- Розовая прядь гривы -->
+                        <path d="M33 21C38 25 40 32 37 39C35 34 32 29 29 25L33 21Z" fill="url(#uniGrad)"/>
+                        <!-- Глаз -->
+                        <circle cx="24" cy="29" r="2.2" fill="#1E1E26"/>
+                        <circle cx="23.4" cy="28.3" r="0.7" fill="#FFFFFF"/>
+                        <!-- Академическая шапочка -->
+                        <polygon points="33,6 52,13 33,20 14,13" fill="#2E2E3A" stroke="#A855F7" stroke-width="1.5" stroke-linejoin="round"/>
+                        <path d="M23 16V21C23 21 28 24 33 24C38 24 43 21 43 21V16" fill="url(#uniGrad)" stroke="#1E1E26" stroke-width="1.2"/>
+                        <!-- Кисточка шапочки -->
+                        <path d="M49 14V24" stroke="#EC4899" stroke-width="2" stroke-linecap="round"/>
+                        <circle cx="49" cy="25" r="2.2" fill="#EC4899"/>
+                    </svg>
+                </div>
+                <div class="text-left">
+                    <div class="font-display font-extrabold text-lg leading-none tracking-tight text-white">Уч<span class="brand-text-gradient">Нейро</span></div>
+                    <div class="text-[11px] text-gray-400 font-medium hidden sm:block">Про развитие и интерес!</div>
+                </div>
+            </button>
+
+            <!-- Десктопная навигация -->
+            <nav class="hidden md:flex items-center gap-1 bg-[#16161C] p-1 rounded-2xl border border-border/70" id="desktop-nav">
+                <button data-tab="home" onclick="navigateTo('home')" class="nav-btn px-3.5 py-2 rounded-xl text-sm font-medium transition-all flex items-center gap-1.5">
+                    <i data-lucide="home" class="w-4 h-4"></i> Главная
+                </button>
+                <button data-tab="videos" onclick="navigateTo('videos')" class="nav-btn px-3.5 py-2 rounded-xl text-sm font-medium transition-all flex items-center gap-1.5">
+                    <i data-lucide="play-circle" class="w-4 h-4"></i> Видео
+                </button>
+                <button data-tab="articles" onclick="navigateTo('articles')" class="nav-btn px-3.5 py-2 rounded-xl text-sm font-medium transition-all flex items-center gap-1.5">
+                    <i data-lucide="book-open" class="w-4 h-4"></i> Статьи
+                </button>
+                <button data-tab="forum" onclick="navigateTo('forum')" class="nav-btn px-3.5 py-2 rounded-xl text-sm font-medium transition-all flex items-center gap-1.5">
+                    <i data-lucide="messages-square" class="w-4 h-4"></i> Форум
+                </button>
+                <button data-tab="schedule" onclick="navigateTo('schedule')" class="nav-btn px-3.5 py-2 rounded-xl text-sm font-medium transition-all flex items-center gap-1.5">
+                    <i data-lucide="calendar" class="w-4 h-4"></i> Расписание
+                </button>
+                <button data-tab="ai" onclick="navigateTo('ai')" class="nav-btn px-3.5 py-2 rounded-xl text-sm font-medium transition-all flex items-center gap-1.5">
+                    <i data-lucide="sparkles" class="w-4 h-4 text-purple-400"></i> ИИ-Помощник
+                </button>
+            </nav>
+
+            <!-- Правая часть: Переключатель ролей + Профиль -->
+            <div class="flex items-center gap-2 sm:gap-3">
+                <!-- Переключатель ролей Ученик / Преподаватель -->
+                <div class="flex items-center bg-[#16161C] p-1 rounded-xl border border-border text-xs font-semibold">
+                    <button id="role-btn-student" onclick="setRole('student')" class="px-2.5 py-1.5 rounded-lg transition-all">Ученик</button>
+                    <button id="role-btn-teacher" onclick="setRole('teacher')" class="px-2.5 py-1.5 rounded-lg transition-all">Учитель</button>
+                </div>
+
+                <!-- Кнопка профиля -->
+                <button onclick="navigateTo('profile')" id="header-profile-btn" class="flex items-center gap-2 p-1 pr-3 rounded-xl bg-card border border-border hover:border-purple-500/60 transition-all">
+                    <div class="w-8 h-8 rounded-lg brand-gradient flex items-center justify-center text-white font-bold text-sm" id="header-avatar">ФВ</div>
+                    <span class="text-sm font-medium hidden lg:inline text-gray-200" id="header-username">Вадим</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- ==================== ОСНОВНОЙ КОНТЕНТ (SPA КОНТЕЙНЕР) ==================== -->
+    <main id="app-content" class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+        <!-- Контент рендерится динамически через JS -->
+    </main>
+
+    <!-- ==================== ФУТЕР ==================== -->
+    <footer class="mt-16 border-t border-border bg-[#16161C]">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 pb-10 border-b border-border/70">
+                <!-- Рассылка -->
+                <div class="lg:col-span-6 space-y-4">
+                    <div class="flex items-center gap-2.5">
+                        <span class="px-2.5 py-1 rounded-full text-xs font-semibold bg-purple-500/15 text-purple-300 border border-purple-500/30">УчНейро</span>
+                        <span class="text-sm text-gray-400">Образование будущего уже здесь</span>
+                    </div>
+                    <h3 class="text-xl font-display font-bold text-white">Будьте в курсе!</h3>
+                    <p class="text-sm text-gray-400 max-w-md">Подпишитесь на нашу рассылку, чтобы получать подборки бесплатных курсов, советы по подготовке к ЕГЭ и обновления нейросети.</p>
+                    <form onsubmit="handleNewsletterSubmit(event)" class="flex flex-col sm:flex-row gap-2 max-w-md">
+                        <input type="email" id="newsletter-email" required placeholder="Введите вашу электронную почту" class="flex-1 px-4 py-2.5 rounded-xl bg-bg border border-border text-sm text-white placeholder-gray-500 focus:outline-none focus:border-purple-500 transition-colors">
+                        <button type="submit" class="px-6 py-2.5 rounded-xl bg-white text-[#121216] font-semibold text-sm hover:bg-purple-100 transition-colors cursor-pointer">
+                            Подписаться
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Справочный центр -->
+                <div class="lg:col-span-3 space-y-3">
+                    <h4 class="font-display font-bold text-white text-sm uppercase tracking-wider">Справочный центр</h4>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li><button onclick="openInfoModal('Часто задаваемые вопросы', 'УчНейро — бесплатная образовательная платформа с ИИ. Вы можете смотреть видеоуроки, генерировать конспекты, проходить тесты и общаться на форуме без ограничений.')" class="hover:text-purple-400 transition-colors">Часто задаваемые вопросы</button></li>
+                        <li><button onclick="openInfoModal('Служба поддержки', 'Мы всегда готовы помочь! Напишите нам в чат поддержки или создайте тему в разделе Форум — преподаватели и модераторы ответят в течение 15 минут.')" class="hover:text-purple-400 transition-colors">Служба поддержки</button></li>
+                        <li><button onclick="navigateTo('articles')" class="hover:text-purple-400 transition-colors">Учебники и база знаний</button></li>
+                        <li><button onclick="openInfoModal('Связаться с нами', 'Проект «УчНейро» разработан в МБОУ СОШ №4 (г. Шадринск). Почта для предложений: hello@uchneyro.edu')" class="hover:text-purple-400 transition-colors">Связаться со службой</button></li>
+                    </ul>
+                </div>
+
+                <!-- Ресурсы и соцсети -->
+                <div class="lg:col-span-3 space-y-3">
+                    <h4 class="font-display font-bold text-white text-sm uppercase tracking-wider">Ресурсы</h4>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li><button onclick="openInfoModal('Политика конфиденциальности', 'Все ваши учебные данные, расписание и прогресс хранятся локально и защищены. Мы не передаём данные третьим лицам.')" class="hover:text-purple-400 transition-colors">Политика конфиденциальности</button></li>
+                        <li><button onclick="openInfoModal('О логотипе УчНейро', 'Единорог в выпускной шапочке символизирует стремление к знаниям, чистоту помыслов и достижение высших целей. Нейросеть, как проводник, направляет пользователя к вершинам знаний.')" class="hover:text-purple-400 transition-colors">О логотипе и миссии</button></li>
+                        <li><button onclick="navigateTo('ai')" class="hover:text-purple-400 transition-colors">Нейросеть УчНейро ИИ</button></li>
+                    </ul>
+                    <div class="pt-3">
+                        <div class="text-xs text-gray-500 mb-2">Связь:</div>
+                        <div class="flex items-center gap-2.5">
+                            <button onclick="showToast('Сообщество ВКонтакте: vk.com/uchneyro')" class="w-9 h-9 rounded-xl bg-card border border-border hover:border-purple-500 flex items-center justify-center text-gray-300 hover:text-purple-400 transition-all" aria-label="VK">
+                                <i data-lucide="globe" class="w-4 h-4"></i>
+                            </button>
+                            <button onclick="showToast('Telegram-канал: @uchneyro_edu')" class="w-9 h-9 rounded-xl bg-card border border-border hover:border-purple-500 flex items-center justify-center text-gray-300 hover:text-purple-400 transition-all" aria-label="Telegram">
+                                <i data-lucide="send" class="w-4 h-4"></i>
+                            </button>
+                            <button onclick="showToast('YouTube-канал УчНейро')" class="w-9 h-9 rounded-xl bg-card border border-border hover:border-purple-500 flex items-center justify-center text-gray-300 hover:text-purple-400 transition-all" aria-label="YouTube">
+                                <i data-lucide="youtube" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pt-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-gray-500">
+                <div>© 2025–2026 УчНейро. Образовательная платформа с нейросетевыми технологиями.</div>
+                <div>Про развитие и интерес!</div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ==================== МОБИЛЬНАЯ НИЖНЯЯ НАВИГАЦИЯ ==================== -->
+    <nav class="md:hidden fixed bottom-0 left-0 right-0 z-40 glass-panel border-t border-border px-2 py-2 flex items-center justify-around">
+        <button data-mob-tab="home" onclick="navigateTo('home')" class="mob-nav-btn flex flex-col items-center gap-0.5 p-1.5 rounded-xl text-[10px] font-medium">
+            <i data-lucide="home" class="w-5 h-5"></i>
+            <span>Главная</span>
+        </button>
+        <button data-mob-tab="videos" onclick="navigateTo('videos')" class="mob-nav-btn flex flex-col items-center gap-0.5 p-1.5 rounded-xl text-[10px] font-medium">
+            <i data-lucide="play-circle" class="w-5 h-5"></i>
+            <span>Видео</span>
+        </button>
+        <button data-mob-tab="articles" onclick="navigateTo('articles')" class="mob-nav-btn flex flex-col items-center gap-0.5 p-1.5 rounded-xl text-[10px] font-medium">
+            <i data-lucide="book-open" class="w-5 h-5"></i>
+            <span>Статьи</span>
+        </button>
+        <button data-mob-tab="forum" onclick="navigateTo('forum')" class="mob-nav-btn flex flex-col items-center gap-0.5 p-1.5 rounded-xl text-[10px] font-medium">
+            <i data-lucide="messages-square" class="w-5 h-5"></i>
+            <span>Форум</span>
+        </button>
+        <button data-mob-tab="schedule" onclick="navigateTo('schedule')" class="mob-nav-btn flex flex-col items-center gap-0.5 p-1.5 rounded-xl text-[10px] font-medium">
+            <i data-lucide="calendar" class="w-5 h-5"></i>
+            <span>План</span>
+        </button>
+        <button data-mob-tab="ai" onclick="navigateTo('ai')" class="mob-nav-btn flex flex-col items-center gap-0.5 p-1.5 rounded-xl text-[10px] font-medium">
+            <i data-lucide="sparkles" class="w-5 h-5"></i>
+            <span>ИИ</span>
+        </button>
+    </nav>
+
+    <!-- ==================== МОДАЛЬНОЕ ОКНО (УНИВЕРСАЛЬНОЕ) ==================== -->
+    <div id="modal-overlay" class="fixed inset-0 z-50 bg-black/75 backdrop-blur-sm hidden items-center justify-center p-4 overflow-y-auto" onclick="if(event.target === this) closeModal()">
+        <div id="modal-box" class="bg-card border border-border rounded-2xl w-full max-w-3xl max-h-[90vh] overflow-y-auto shadow-2xl animate-fade-in">
+            <!-- Контент модалки вставляется через JS -->
+        </div>
+    </div>
+
+    <!-- ==================== УВЕДОМЛЕНИЯ (TOAST) ==================== -->
+    <div id="toast-container" class="fixed top-20 right-4 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+    <!-- ==================== JAVASCRIPT ЛОГИКА ПРИЛОЖЕНИЯ ==================== -->
+    <script>
+        /* ==========================================================================
+           1. КОНФИГУРАЦИЯ GEMINI API И ПОМОЩНИКИ
+           ========================================================================== */
+        const apiKey = ""; // Ключ предоставляется автоматически средой выполнения
+        const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKey}`;
+
+        /**
+         * Универсальный вызов Gemini API с экспоненциальным откатом (exponential backoff)
+         */
+        async function callGeminiAPI(prompt, systemInstruction = "", jsonSchema = null) {
+            const payload = {
+                contents: [{ parts: [{ text: prompt }] }],
+            };
+
+            if (systemInstruction) {
+                payload.systemInstruction = { parts: [{ text: systemInstruction }] };
+            }
+
+            if (jsonSchema) {
+                payload.generationConfig = {
+                    responseMimeType: "application/json",
+                    responseSchema: jsonSchema
+                };
+            }
+
+            const delays = [1000, 2000, 4000];
+            for (let attempt = 0; attempt <= delays.length; attempt++) {
+                try {
+                    const response = await fetch(GEMINI_URL, {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify(payload)
+                    });
+
+                    if (!response.ok) {
+                        if (attempt < delays.length) {
+                            await new Promise(r => setTimeout(r, delays[attempt]));
+                            continue;
+                        }
+                        throw new Error(`Ошибка API: ${response.status}`);
+                    }
+
+                    const result = await response.json();
+                    const text = result?.candidates?.[0]?.content?.parts?.[0]?.text;
+                    if (!text) throw new Error("Пустой ответ от нейросети");
+                    return text;
+                } catch (err) {
+                    if (attempt < delays.length) {
+                        await new Promise(r => setTimeout(r, delays[attempt]));
+                        continue;
+                    }
+                    throw err;
+                }
+            }
+        }
+
+        /**
+         * Безопасное форматирование Markdown-ответов нейросети в HTML
+         */
+        function formatAIText(text) {
+            if (!text) return "";
+            let safe = text
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;");
+
+            // Заголовки
+            safe = safe.replace(/^### (.*$)/gim, '<h4>$1</h4>');
+            safe = safe.replace(/^## (.*$)/gim, '<h3>$1</h3>');
+            // Жирный и курсив
+            safe = safe.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+            safe = safe.replace(/\*(.*?)\*/g, '<em>$1</em>');
+            // Код
+            safe = safe.replace(/`([^`]+)`/g, '<code class="px-1.5 py-0.5 rounded bg-bg text-purple-300 text-xs font-mono">$1</code>');
+            // Списки
+            safe = safe.replace(/^\s*[-•]\s+(.*)$/gim, '<li>$1</li>');
+            safe = safe.replace(/(<li>.*<\/li>)/gms, '<ul>$1</ul>');
+            // Переносы строк
+            safe = safe.replace(/\n\n/g, '</p><p>');
+            safe = safe.replace(/\n/g, '<br>');
+            return `<div class="ai-prose text-sm text-gray-200"><p>${safe}</p></div>`;
+        }
+
+        /**
+         * Показ всплывающего уведомления (замена alert)
+         */
+        function showToast(message, type = "info") {
+            const container = document.getElementById("toast-container");
+            const toast = document.createElement("div");
+            const colors = {
+                info: "border-purple-500/50 bg-[#1E1E26] text-white",
+                success: "border-emerald-500/50 bg-[#1E1E26] text-emerald-200",
+                error: "border-rose-500/50 bg-[#1E1E26] text-rose-200"
+            };
+            const icon = type === "success" ? "check-circle" : type === "error" ? "alert-circle" : "sparkles";
+            toast.className = `pointer-events-auto flex items-center gap-2.5 px-4 py-3 rounded-xl border shadow-xl text-sm font-medium animate-fade-in max-w-xs sm:max-w-sm ${colors[type] || colors.info}`;
+            toast.innerHTML = `<i data-lucide="${icon}" class="w-4 h-4 shrink-0 text-purple-400"></i><span>${message}</span>`;
+            container.appendChild(toast);
+            lucide.createIcons();
+            setTimeout(() => {
+                toast.style.opacity = "0";
+                toast.style.transform = "translateY(-8px)";
+                toast.style.transition = "all 0.3s ease";
+                setTimeout(() => toast.remove(), 300);
+            }, 3500);
+        }
+
+        /* ==========================================================================
+           2. НАЧАЛЬНЫЕ ДАННЫЕ И СОСТОЯНИЕ (LOCALSTORAGE)
+           ========================================================================== */
+        const STORAGE_KEY = "uchneyro_state_v1";
+
+        const DEFAULT_STATE = {
+            currentTab: "home",
+            role: "student", // 'student' | 'teacher'
+            aiSubTab: "chat", // 'chat' | 'quiz'
+            user: {
+                name: "Федоров Вадим",
+                city: "Шадринск",
+                status: "Готовлюсь к ЕГЭ и учу Python",
+                completedCourses: 3,
+                studyHours: 56,
+                achievementsPercent: 5,
+                subscriptions: 2,
+                friends: 14,
+                activity: [
+                    { text: "Продолжен курс «Python — язык программирования» (80%)", time: "Сегодня, 14:20", icon: "play-circle" },
+                    { text: "Прочитана статья «Социология — что это такое?»", time: "Вчера, 19:05", icon: "book-open" },
+                    { text: "Получен ответ преподавателя на Форуме УчНейро", time: "2 дня назад", icon: "message-square" }
+                ]
+            },
+            teacherStats: {
+                views: 14820,
+                income: 28450,
+                rating: 4.9,
+                students: 312
+            },
+            videos: [
+                // Продолжить обучение
+                { id: "v1", section: "continue", title: "Python — язык программирования", subject: "Информатика", modules: "6 модулей", duration: "42 мин", level: "Начальный", progress: 72, author: "Вамир Москин", gradient: "from-violet-600 via-purple-700 to-indigo-900", icon: "code-2", likes: 342, dislikes: 4, userVote: null, description: "Изучаем основы Python: переменные, циклы, функции и первые алгоритмы для решения задач ЕГЭ и реальных проектов.", comments: [{ author: "Мария К.", text: "Очень понятное объяснение циклов! Спасибо!", role: "Ученик" }] },
+                { id: "v2", section: "continue", title: "Зарубежная литература", subject: "Литература", modules: "5 модулей", duration: "35 мин", level: "Средний", progress: 45, author: "Елена Соколова", gradient: "from-fuchsia-600 via-pink-700 to-rose-900", icon: "feather", likes: 189, dislikes: 2, userVote: null, description: "Разбор ключевых произведений мировой классики от античности до XX века: основные темы, символы и приёмы.", comments: [] },
+                { id: "v3", section: "continue", title: "Коммуникация и психология", subject: "Обществознание", modules: "4 модуля", duration: "28 мин", level: "Начальный", progress: 60, author: "Алексей Давыдов", gradient: "from-blue-600 via-indigo-700 to-violet-900", icon: "users", likes: 215, dislikes: 3, userVote: null, description: "Как эффективно выступать перед аудиторией, работать в команде и справляться со стрессом перед экзаменами.", comments: [] },
+
+                // Новые и популярные
+                { id: "v4", section: "popular", title: "Процессы и явления в окружающем мире", subject: "Физика", modules: "3 модуля", duration: "38 мин", level: "Начальный", progress: 0, author: "Дмитрий Орлов", gradient: "from-cyan-600 via-blue-700 to-indigo-900", icon: "atom", likes: 410, dislikes: 5, userVote: null, description: "Механические, тепловые и электромагнитные явления вокруг нас с наглядными примерами и разбором формул.", comments: [] },
+                { id: "v5", section: "popular", title: "История мира", subject: "История", modules: "4 модуля", duration: "50 мин", level: "Средний", progress: 0, author: "Игорь Петров", gradient: "from-amber-600 via-orange-700 to-red-900", icon: "landmark", likes: 298, dislikes: 6, userVote: null, description: "От древних цивилизаций до современности: хронология важнейших событий и причинно-следственные связи.", comments: [] },
+                { id: "v6", section: "popular", title: "Молекулы? Атомы? Соединения?", subject: "Химия", modules: "1 модуль", duration: "24 мин", level: "Начальный", progress: 0, author: "Анна Белова", gradient: "from-emerald-600 via-teal-700 to-cyan-900", icon: "flask-conical", likes: 274, dislikes: 2, userVote: null, description: "Простое введение в строение вещества, таблицу Менделеева и химические связи без скучной зубрёжки.", comments: [] },
+                { id: "v7", section: "popular", title: "О природе", subject: "Биология", modules: "12 модулей", duration: "1ч 15м", level: "Средний", progress: 0, author: "Ольга Лебедева", gradient: "from-green-600 via-emerald-700 to-teal-900", icon: "leaf", likes: 512, dislikes: 4, userVote: null, description: "Большой курс по экосистемам, клеточному строению, эволюции и биоразнообразию нашей планеты.", comments: [] },
+                { id: "v8", section: "popular", title: "Чудеса географии", subject: "География", modules: "5 модулей", duration: "40 мин", level: "Начальный", progress: 0, author: "Сергей Волков", gradient: "from-sky-600 via-blue-700 to-slate-900", icon: "globe-2", likes: 194, dislikes: 1, userVote: null, description: "Климатические пояса, тектоника плит, океанические течения и удивительные природные феномены.", comments: [] },
+
+                // Рекомендовано нейросетью
+                { id: "v9", section: "recommended", title: "О компьютере", subject: "Информатика", modules: "2 модуля", duration: "32 мин", level: "Начальный", progress: 0, author: "Светлана Михайловских", gradient: "from-purple-600 via-violet-700 to-fuchsia-900", icon: "cpu", likes: 387, dislikes: 3, userVote: null, description: "Архитектура ЭВМ, принцип фон Неймана, системы счисления и логические вентили простым языком.", comments: [] },
+                { id: "v10", section: "recommended", title: "Логарифмы и графики", subject: "Математика", modules: "3 модуля", duration: "46 мин", level: "Продвинутый", progress: 0, author: "Максим Громов", gradient: "from-rose-600 via-pink-700 to-purple-900", icon: "sigma", likes: 455, dislikes: 5, userVote: null, description: "Полный разбор логарифмических уравнений, неравенств и преобразований графиков для профильного ЕГЭ.", comments: [] },
+                { id: "v11", section: "recommended", title: "Откройте ДНК", subject: "Химия", modules: "Эксперименты", duration: "29 мин", level: "Продвинутый", progress: 0, author: "Анна Белова", gradient: "from-teal-500 via-emerald-700 to-indigo-900", icon: "dna", likes: 329, dislikes: 2, userVote: null, description: "Биохимия нуклеиновых кислот, репликация ДНК и как современные лаборатории расшифровывают геном.", comments: [] }
+            ],
+            articles: [
+                {
+                    id: "a1",
+                    title: "Социология — что это такое?",
+                    author: "Алексей Давыдов",
+                    duration: "2ч 15м",
+                    rating: "5/5",
+                    category: "История",
+                    featured: true,
+                    bookmarked: false,
+                    read: false,
+                    progress: 0,
+                    gradient: "from-purple-600 to-indigo-800",
+                    summary: "Введение в науку об обществе: социальные институты, стратификация и методы социологических исследований.",
+                    content: "Социология — это наука о закономерностях становления, функционирования и развития общества, социальных отношений и социальных общностей.\n\nОсновные разделы социологии включают изучение социальных институтов (семья, образование, государство, экономика), социальной стратификации и мобильности, а также массовых коммуникаций.\n\nЗачем изучать социологию школьнику и студенту? Она помогает критически анализировать новости, понимать механизмы взаимодействия людей в коллективе и уверенно решать задания блока «Социальные отношения» на ЕГЭ по обществознанию."
+                },
+                {
+                    id: "a2",
+                    title: "Курс для полиглота",
+                    author: "Вадим Безруков",
+                    duration: "45 мин",
+                    rating: "4.7/5",
+                    category: "Литература",
+                    featured: true,
+                    bookmarked: true,
+                    read: false,
+                    progress: 35,
+                    gradient: "from-pink-600 to-rose-800",
+                    summary: "Научно обоснованные методики быстрого запоминания иностранных слов, интервальные повторения и языковое погружение.",
+                    content: "Изучение иностранных языков не требует «особого таланта» — оно требует системы. Современные когнитивные исследования доказывают, что регулярные занятия по 20 минут в день эффективнее редких марафонов по 3 часа.\n\nКлючевые техники полиглотов:\n1. Интервальное повторение (Spaced Repetition) — повторяйте новые слова через 1 день, 3 дня, неделю и месяц.\n2. Контекстное чтение — учите слова не списком, а внутри коротких историй и диалогов.\n3. Активное воспроизведение — используйте нейросеть УчНейро как собеседника для ежедневной практики."
+                },
+                {
+                    id: "a3",
+                    title: "Язык программирования — Python",
+                    author: "Вамир Москин",
+                    duration: "1ч 10м",
+                    rating: "4.9/5",
+                    category: "Программирование",
+                    featured: false,
+                    bookmarked: true,
+                    read: false,
+                    progress: 80,
+                    gradient: "from-violet-600 to-fuchsia-800",
+                    summary: "Полный конспект по синтаксису Python 3, структурам данных (списки, словари, множества) и типовым задачам ЕГЭ.",
+                    content: "Python стал главным языком для старта в программировании, анализе данных и машинном обучении благодаря чистому и читаемому синтаксису.\n\nГлавные структуры данных:\n- list (списки) — изменяемые упорядоченные коллекции.\n- dict (словари) — хранение пар «ключ: значение» с мгновенным поиском.\n- set (множества) — уникальные элементы для быстрых математических операций.\n\nСовет для подготовки к ЕГЭ: освойте генераторы списков (list comprehensions) и библиотеку itertools — они экономят до 50% времени на экзамене."
+                },
+                {
+                    id: "a4",
+                    title: "Интегралы и производные без страха",
+                    author: "Максим Громов",
+                    duration: "35 мин",
+                    rating: "4.8/5",
+                    category: "Математика",
+                    featured: false,
+                    bookmarked: false,
+                    read: false,
+                    progress: 0,
+                    gradient: "from-blue-600 to-cyan-800",
+                    summary: "Геометрический и физический смысл производной, таблица базовых интегралов и разбор типовых задач.",
+                    content: "Производная функции показывает мгновенную скорость её изменения. В физике производная координаты по времени — это скорость, а производная скорости — ускорение.\n\nВ геометрии значение производной в точке равно угловому коэффициенту касательной к графику функции. Понимание этого простого правила позволяет безошибочно решать задания №8 и №12 профильного ЕГЭ по математике."
+                },
+                {
+                    id: "a5",
+                    title: "Строение клетки и генетика",
+                    author: "Ольга Лебедева",
+                    duration: "50 мин",
+                    rating: "4.9/5",
+                    category: "Естественные науки",
+                    featured: false,
+                    bookmarked: false,
+                    read: false,
+                    progress: 0,
+                    gradient: "from-emerald-600 to-teal-800",
+                    summary: "Органоиды эукариотической клетки, митоз, мейоз и законы Менделя в удобных схемах.",
+                    content: "Клетка — элементарная структурно-функциональная единица всего живого. Митохондрии выступают «энергетическими станциями», синтезируя АТФ, а рибосомы отвечают за сборку белковых молекул по матрице иРНК.\n\nПонимание разницы между митозом (сохранение диплоидного набора хромосом) и мейозом (образование гаплоидных гамет) — фундамент для решения генетических задач."
+                }
+            ],
+            forumPosts: [
+                {
+                    id: "f1",
+                    title: "Как быстрее всего решать 15-е задание ЕГЭ по информатике на Python?",
+                    author: "Дмитрий Смирнов",
+                    category: "Подготовка к ЕГЭ",
+                    tags: ["ЕГЭ", "Python", "Информатика"],
+                    solved: true,
+                    hasTeacherReply: true,
+                    likes: 28,
+                    liked: false,
+                    createdAt: "2 часа назад",
+                    body: "Постоянно путаюсь в побитовой конъюнкции и отрезках. Есть ли универсальный шаблон на Python, чтобы проверять значения параметра A перебором?",
+                    replies: [
+                        { author: "Светлана Михайловских", role: "Преподаватель", isTeacher: true, likes: 19, text: "Отличный вопрос! Используйте функцию all() и генератор: `for A in range(1, 1000): if all(f(x, A) for x in range(1, 1000)): print(A); break`. Это работает для 90% задач на побитовую конъюнкцию и делители." },
+                        { author: "Артём К.", role: "Ученик", isTeacher: false, likes: 7, text: "Спасибо огромное! Только что проверил на пробнике — решилось за 2 минуты!" }
+                    ]
+                },
+                {
+                    id: "f2",
+                    title: "Какой графический редактор выбрать для презентаций кроме PowerPoint?",
+                    author: "Полина Нестерова",
+                    category: "Технологии",
+                    tags: ["Дизайн", "Презентации", "Совет"],
+                    solved: false,
+                    hasTeacherReply: false,
+                    likes: 15,
+                    liked: false,
+                    createdAt: "5 часов назад",
+                    body: "Готовлю школьный проект и хочу сделать современную интерактивную презентацию с аккуратной инфографикой. Что посоветуете?",
+                    replies: [
+                        { author: "Егор Жуков", role: "Ученик", isTeacher: false, likes: 6, text: "Попробуй Figma — там очень удобно верстать слайды, а потом экспортировать в PDF. Ещё круто смотрится сочетание PowerPoint с функцией Morph (Трансформация)." }
+                    ]
+                },
+                {
+                    id: "f3",
+                    title: "Объясните разницу между ковалентной полярной и ионной связью",
+                    author: "София Волкова",
+                    category: "Науки",
+                    tags: ["Химия", "8-11 класс"],
+                    solved: true,
+                    hasTeacherReply: true,
+                    likes: 21,
+                    liked: false,
+                    createdAt: "Вчера",
+                    body: "Как быстро определить тип химической связи по формуле вещества на контрольной?",
+                    replies: [
+                        { author: "Анна Белова", role: "Преподаватель", isTeacher: true, likes: 16, text: "Запомните простое правило: Металл + Неметалл = ионная связь (например, NaCl). Два разных Неметалла = ковалентная полярная (например, HCl, H2O). Два одинаковых Неметалла = ковалентная неполярная (O2, N2)." }
+                    ]
+                },
+                {
+                    id: "f4",
+                    title: "С чего начать изучение веб-разработки в 10 классе?",
+                    author: "Максим И.",
+                    category: "Программирование",
+                    tags: ["HTML", "CSS", "JavaScript"],
+                    solved: false,
+                    hasTeacherReply: false,
+                    likes: 19,
+                    liked: false,
+                    createdAt: "2 дня назад",
+                    body: "Хочу научиться делать сайты с нуля. Стоит ли сразу учить фреймворки или сначала освоить чистый HTML/CSS/JS?",
+                    replies: []
+                }
+            ],
+            schedule: [
+                { id: "t1", day: "Пн", subject: "Математика", title: "Домашняя работа: логарифмы", deadline: "17:00", done: true },
+                { id: "t2", day: "Пн", subject: "Информатика", title: "Практика Python (модуль 4)", deadline: "19:00", done: false },
+                { id: "t3", day: "Вт", subject: "История", title: "Конспект: реформы XIX века", deadline: "15:00", done: false },
+                { id: "t4", day: "Ср", subject: "Литература", title: "Эссе по зарубежной классике", deadline: "18:00", done: false },
+                { id: "t5", day: "Чт", subject: "Английский", title: "Повторить 30 новых слов", deadline: "16:00", done: true },
+                { id: "t6", day: "Пт", subject: "Физика", title: "Задачи по механике (ЕГЭ)", deadline: "14:00", done: false },
+                { id: "t7", day: "Сб", subject: "Биология", title: "Тест: строение клетки", deadline: "13:00", done: false },
+                { id: "t8", day: "Вс", subject: "Химия", title: "Видеоурок «Откройте ДНК»", deadline: "17:00", done: false }
+            ],
+            aiChat: [
+                { role: "model", text: "Привет! Я **УчНейро ИИ** — твой персональный учебный наставник. Могу объяснить сложную тему простыми словами, составить краткий конспект, помочь с подготовкой к ЕГЭ или разобрать код на Python. О чём хочешь узнать сегодня?" }
+            ]
+        };
+
+        // Загрузка состояния из localStorage
+        let state = loadState();
+
+        function loadState() {
+            try {
+                const raw = localStorage.getItem(STORAGE_KEY);
+                if (!raw) return structuredClone(DEFAULT_STATE);
+                const parsed = JSON.parse(raw);
+                // Мягкое слияние на случай новых полей
+                return { ...structuredClone(DEFAULT_STATE), ...parsed };
+            } catch (e) {
+                return structuredClone(DEFAULT_STATE);
+            }
+        }
+
+        function saveState() {
+            try {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+            } catch (e) {
+                // Игнорируем переполнение квоты
+            }
+        }
+
+        function addActivity(text, icon = "sparkles") {
+            state.user.activity.unshift({ text, time: "Только что", icon });
+            if (state.user.activity.length > 12) state.user.activity.pop();
+            saveState();
+        }
+
+        function rewardProgress(hoursDelta = 1, achieveDelta = 3, courseDelta = 0) {
+            state.user.studyHours += hoursDelta;
+            state.user.achievementsPercent = Math.min(100, state.user.achievementsPercent + achieveDelta);
+            state.user.completedCourses += courseDelta;
+            saveState();
+        }
+
+        /* ==========================================================================
+           3. НАВИГАЦИЯ И РОЛИ
+           ========================================================================== */
+        let videoFilter = { search: "", subject: "Все", level: "Все" };
+        let articleFilter = { category: "Все" };
+        let forumFilter = { category: "Все", search: "" };
+
+        // Временное состояние активного теста
+        let activeQuiz = {
+            loading: false,
+            topic: "",
+            subject: "Информатика",
+            questions: [],
+            currentIndex: 0,
+            answers: [], // выбранные индексы
+            finished: false
+        };
+
+        // Временное состояние плеера
+        let playerTimer = null;
+
+        function navigateTo(tab) {
+            state.currentTab = tab;
+            saveState();
+            updateNavUI();
+            renderCurrentTab();
+            window.scrollTo({ top: 0, behavior: "smooth" });
+        }
+
+        function setRole(role) {
+            state.role = role;
+            saveState();
+            updateRoleUI();
+            showToast(role === "teacher" ? "Включён режим Преподавателя" : "Включён режим Ученика", "info");
+            if (state.currentTab === "profile" || state.currentTab === "home") {
+                renderCurrentTab();
+            }
+        }
+
+        function updateRoleUI() {
+            const sBtn = document.getElementById("role-btn-student");
+            const tBtn = document.getElementById("role-btn-teacher");
+            if (state.role === "student") {
+                sBtn.className = "px-2.5 py-1.5 rounded-lg transition-all brand-gradient text-white shadow";
+                tBtn.className = "px-2.5 py-1.5 rounded-lg transition-all text-gray-400 hover:text-white";
+            } else {
+                tBtn.className = "px-2.5 py-1.5 rounded-lg transition-all brand-gradient text-white shadow";
+                sBtn.className = "px-2.5 py-1.5 rounded-lg transition-all text-gray-400 hover:text-white";
+            }
+
+            // Обновляем шапку профиля
+            const initials = state.user.name.split(" ").map(w => w[0]).join("").slice(0, 2).toUpperCase() || "УН";
+            document.getElementById("header-avatar").textContent = initials;
+            document.getElementById("header-username").textContent = state.role === "teacher" ? "Кабинет" : state.user.name.split(" ")[1] || state.user.name;
+        }
+
+        function updateNavUI() {
+            document.querySelectorAll(".nav-btn").forEach(btn => {
+                const isActive = btn.dataset.tab === state.currentTab;
+                btn.className = isActive
+                    ? "nav-btn px-3.5 py-2 rounded-xl text-sm font-semibold transition-all flex items-center gap-1.5 bg-purple-600/20 text-purple-300 border border-purple-500/40"
+                    : "nav-btn px-3.5 py-2 rounded-xl text-sm font-medium transition-all flex items-center gap-1.5 text-gray-400 hover:text-white hover:bg-white/5 border border-transparent";
+            });
+
+            document.querySelectorAll(".mob-nav-btn").forEach(btn => {
+                const isActive = btn.dataset.mobTab === state.currentTab;
+                btn.className = isActive
+                    ? "mob-nav-btn flex flex-col items-center gap-0.5 p-1.5 rounded-xl text-[10px] font-semibold text-purple-400 bg-purple-500/10"
+                    : "mob-nav-btn flex flex-col items-center gap-0.5 p-1.5 rounded-xl text-[10px] font-medium text-gray-400";
+            });
+        }
+
+        function renderCurrentTab() {
+            const container = document.getElementById("app-content");
+            switch (state.currentTab) {
+                case "home": container.innerHTML = renderHome(); break;
+                case "videos": container.innerHTML = renderVideos(); break;
+                case "articles": container.innerHTML = renderArticles(); break;
+                case "forum": container.innerHTML = renderForum(); break;
+                case "schedule": container.innerHTML = renderSchedule(); break;
+                case "ai": container.innerHTML = renderAIHub(); break;
+                case "profile": container.innerHTML = renderProfile(); break;
+                default: container.innerHTML = renderHome();
+            }
+            lucide.createIcons();
+            if (state.currentTab === "ai" && state.aiSubTab === "chat") {
+                const chatBox = document.getElementById("ai-chat-messages");
+                if (chatBox) chatBox.scrollTop = chatBox.scrollHeight;
+            }
+        }
+
+        /* ==========================================================================
+           4. РАЗДЕЛ 1: ГЛАВНАЯ / ОБЗОР
+           ========================================================================== */
+        function renderHome() {
+            const questions = [
+                "Как дополнительно подготовиться к ЕГЭ бесплатно?",
+                "Где изучить язык программирования?",
+                "Как научиться играть на гитаре?",
+                "Где изучить создание презентаций в PowerPoint?"
+            ];
+
+            const topVideos = state.videos.slice(0, 3);
+
+            return `
+            <div class="space-y-12 animate-fade-in">
+                <!-- HERO БЛОК -->
+                <section class="relative overflow-hidden rounded-3xl bg-card border border-border p-6 sm:p-10 lg:p-12">
+                    <div class="absolute -top-24 -right-24 w-72 h-72 bg-purple-600/20 rounded-full blur-3xl pointer-events-none"></div>
+                    <div class="absolute -bottom-24 -left-24 w-72 h-72 bg-pink-600/15 rounded-full blur-3xl pointer-events-none"></div>
+
+                    <div class="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                        <div class="lg:col-span-7 space-y-6">
+                            <!-- Плавающие вопросы -->
+                            <div class="flex flex-wrap gap-2">
+                                ${questions.map(q => `
+                                    <button onclick="askQuickQuestion('${q.replace(/'/g, "\\'")}')" class="text-xs sm:text-sm px-3.5 py-1.5 rounded-full bg-bg/90 border border-border hover:border-purple-500/60 text-gray-300 hover:text-purple-200 transition-all flex items-center gap-1.5">
+                                        <i data-lucide="help-circle" class="w-3.5 h-3.5 text-purple-400"></i> ${q}
+                                    </button>
+                                `).join("")}
+                            </div>
+
+                            <div class="space-y-3">
+                                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-500/15 border border-purple-500/30 text-purple-300 text-xs font-semibold">
+                                    <i data-lucide="sparkles" class="w-3.5 h-3.5"></i> Ответы есть!
+                                </div>
+                                <h1 class="text-3xl sm:text-5xl font-display font-extrabold tracking-tight text-white leading-tight">
+                                    Уч<span class="brand-text-gradient">Нейро</span> — про развитие и интерес!
+                                </h1>
+                                <p class="text-gray-300 text-base sm:text-lg leading-relaxed max-w-2xl">
+                                    Инновационная образовательная платформа с нейросетью: видеохостинг, автоматические конспекты, персональные учебные планы, интерактивные тесты и живой форум для учеников и преподавателей.
+                                </p>
+                            </div>
+
+                            <div class="flex flex-wrap gap-3 pt-2">
+                                <button onclick="navigateTo('videos')" class="px-6 py-3.5 rounded-2xl brand-gradient brand-gradient-hover text-white font-semibold text-sm sm:text-base shadow-lg shadow-purple-600/25 flex items-center gap-2 transition-all">
+                                    <i data-lucide="play" class="w-4 h-4 fill-current"></i> Перейти к видеоурокам
+                                </button>
+                                <button onclick="navigateTo('ai')" class="px-6 py-3.5 rounded-2xl bg-bg border border-border hover:border-purple-500 text-white font-semibold text-sm sm:text-base flex items-center gap-2 transition-all">
+                                    <i data-lucide="sparkles" class="w-4 h-4 text-purple-400"></i> Спросить УчНейро ИИ
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Правая карточка с логотипом и быстрой статистикой -->
+                        <div class="lg:col-span-5">
+                            <div class="rounded-2xl bg-bg/90 border border-border p-6 space-y-5 shadow-xl">
+                                <div class="flex items-center gap-4">
+                                    <div class="w-16 h-16 rounded-2xl bg-card border border-purple-500/40 flex items-center justify-center shrink-0 animate-float">
+                                        <svg viewBox="0 0 64 64" class="w-12 h-12" fill="none">
+                                            <defs>
+                                                <linearGradient id="heroUni" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse">
+                                                    <stop stop-color="#A855F7"/><stop offset="1" stop-color="#EC4899"/>
+                                                </linearGradient>
+                                            </defs>
+                                            <path d="M22 23L8 8L27 18L22 23Z" fill="#E9D5FF" stroke="#C084FC" stroke-width="1.2"/>
+                                            <path d="M35 20C45 20 53 28 52 40C51 47 46 53 40 56C43 49 44 42 40 35C38 31 35 27 35 20Z" fill="url(#heroUni)"/>
+                                            <path d="M23 22C26 18 33 18 38 23C42 27 44 35 42 44C40 50 37 55 34 58H21C23 50 24 44 21 39C18 38 14 38 12 35C10 32 12 28 16 26L23 22Z" fill="#F8FAFC"/>
+                                            <circle cx="24" cy="29" r="2.2" fill="#1E1E26"/>
+                                            <polygon points="33,6 52,13 33,20 14,13" fill="#2E2E3A" stroke="#A855F7" stroke-width="1.5"/>
+                                            <path d="M23 16V21C23 21 28 24 33 24C38 24 43 21 43 21V16" fill="url(#heroUni)"/>
+                                            <path d="M49 14V24" stroke="#EC4899" stroke-width="2" stroke-linecap="round"/>
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <div class="text-xs font-semibold uppercase tracking-wider text-purple-400">Твой текущий режим</div>
+                                        <div class="text-lg font-display font-bold text-white">${state.role === "student" ? "Ученик: " + state.user.name : "Преподаватель"}</div>
+                                        <div class="text-xs text-gray-400">${state.role === "student" ? `Учебных часов: ${state.user.studyHours} ч • Курсов: ${state.user.completedCourses}` : `Рейтинг: ${state.teacherStats.rating}/5 • Учеников: ${state.teacherStats.students}`}</div>
+                                    </div>
+                                </div>
+
+                                <div class="grid grid-cols-2 gap-3">
+                                    <button onclick="navigateTo('schedule')" class="p-3.5 rounded-xl bg-card border border-border hover:border-purple-500/60 text-left transition-all">
+                                        <i data-lucide="calendar-check" class="w-5 h-5 text-purple-400 mb-2"></i>
+                                        <div class="text-sm font-semibold text-white">Расписание</div>
+                                        <div class="text-xs text-gray-400">${state.schedule.filter(t => !t.done).length} задач в плане</div>
+                                    </button>
+                                    <button onclick="state.aiSubTab='quiz'; navigateTo('ai')" class="p-3.5 rounded-xl bg-card border border-border hover:border-pink-500/60 text-left transition-all">
+                                        <i data-lucide="brain-circuit" class="w-5 h-5 text-pink-400 mb-2"></i>
+                                        <div class="text-sm font-semibold text-white">ИИ-Тесты</div>
+                                        <div class="text-xs text-gray-400">Проверка знаний</div>
+                                    </button>
+                                    <button onclick="navigateTo('forum')" class="p-3.5 rounded-xl bg-card border border-border hover:border-blue-500/60 text-left transition-all">
+                                        <i data-lucide="messages-square" class="w-5 h-5 text-blue-400 mb-2"></i>
+                                        <div class="text-sm font-semibold text-white">Форум</div>
+                                        <div class="text-xs text-gray-400">42 онлайн сейчас</div>
+                                    </button>
+                                    <button onclick="navigateTo('profile')" class="p-3.5 rounded-xl bg-card border border-border hover:border-emerald-500/60 text-left transition-all">
+                                        <i data-lucide="award" class="w-5 h-5 text-emerald-400 mb-2"></i>
+                                        <div class="text-sm font-semibold text-white">${state.role === "teacher" ? "Кабинет" : "Прогресс"}</div>
+                                        <div class="text-xs text-gray-400">${state.role === "teacher" ? "ИИ-проверка и доход" : `Достижения ${state.user.achievementsPercent}%`}</div>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- БЫСТРЫЙ ДОСТУП К ПОПУЛЯРНЫМ КУРСАМ -->
+                <section class="space-y-5">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <h2 class="text-2xl font-display font-bold text-white">Продолжить обучение</h2>
+                            <p class="text-sm text-gray-400">Твои активные видеокурсы с ИИ-конспектами</p>
+                        </div>
+                        <button onclick="navigateTo('videos')" class="text-sm font-semibold text-purple-400 hover:text-purple-300 flex items-center gap-1">
+                            Все видео <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+                        ${topVideos.map(v => renderVideoCard(v)).join("")}
+                    </div>
+                </section>
+
+                <!-- КЛЮЧЕВЫЕ ПРЕИМУЩЕСТВА ДЛЯ УЧЕНИКОВ И ПРЕПОДАВАТЕЛЕЙ -->
+                <section class="space-y-6">
+                    <div class="text-center max-w-2xl mx-auto space-y-2">
+                        <h2 class="text-2xl sm:text-3xl font-display font-bold text-white">Для учеников и преподавателей</h2>
+                        <p class="text-sm text-gray-400">УчНейро объединяет лучшие инструменты онлайн-образования и искусственного интеллекта в одном пространстве</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+                        <div class="p-6 rounded-2xl bg-card border border-border hover:border-purple-500/50 transition-all space-y-3">
+                            <div class="w-11 h-11 rounded-xl bg-purple-500/15 text-purple-400 flex items-center justify-center">
+                                <i data-lucide="file-text" class="w-5 h-5"></i>
+                            </div>
+                            <h3 class="font-display font-bold text-white">Автоконспекты ИИ</h3>
+                            <p class="text-sm text-gray-400">Нейросеть анализирует видеоуроки и мгновенно создаёт структурированные конспекты для подготовки к экзаменам.</p>
+                        </div>
+                        <div class="p-6 rounded-2xl bg-card border border-border hover:border-pink-500/50 transition-all space-y-3">
+                            <div class="w-11 h-11 rounded-xl bg-pink-500/15 text-pink-400 flex items-center justify-center">
+                                <i data-lucide="calendar-clock" class="w-5 h-5"></i>
+                            </div>
+                            <h3 class="font-display font-bold text-white">Умное расписание</h3>
+                            <p class="text-sm text-gray-400">Автоматическое планирование недели под твою цель: ЕГЭ, олимпиада или освоение нового навыка.</p>
+                        </div>
+                        <div class="p-6 rounded-2xl bg-card border border-border hover:border-blue-500/50 transition-all space-y-3">
+                            <div class="w-11 h-11 rounded-xl bg-blue-500/15 text-blue-400 flex items-center justify-center">
+                                <i data-lucide="check-square" class="w-5 h-5"></i>
+                            </div>
+                            <h3 class="font-display font-bold text-white">Автоматизация для учителей</h3>
+                            <p class="text-sm text-gray-400">ИИ-проверка работ, адаптация материалов под уровень учеников и аналитика успеваемости.</p>
+                        </div>
+                        <div class="p-6 rounded-2xl bg-card border border-border hover:border-emerald-500/50 transition-all space-y-3">
+                            <div class="w-11 h-11 rounded-xl bg-emerald-500/15 text-emerald-400 flex items-center justify-center">
+                                <i data-lucide="wallet" class="w-5 h-5"></i>
+                            </div>
+                            <h3 class="font-display font-bold text-white">Монетизация контента</h3>
+                            <p class="text-sm text-gray-400">Преподаватели публикуют видеоуроки и статьи, получают рейтинг и зарабатывают на просмотрах.</p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+            `;
+        }
+
+        function askQuickQuestion(question) {
+            state.aiSubTab = "chat";
+            navigateTo("ai");
+            setTimeout(() => {
+                const input = document.getElementById("ai-chat-input");
+                if (input) {
+                    input.value = question;
+                    sendAIChatMessage();
+                }
+            }, 100);
+        }
+
+        /* ==========================================================================
+           5. РАЗДЕЛ 2: ВИДЕОХОСТИНГ
+           ========================================================================== */
+        function renderVideos() {
+            const subjects = ["Все", "Физика", "История", "Химия", "Биология", "Информатика", "Математика", "Литература", "География"];
+            const levels = ["Все", "Начальный", "Средний", "Продвинутый"];
+
+            const filtered = state.videos.filter(v => {
+                const matchSearch = v.title.toLowerCase().includes(videoFilter.search.toLowerCase()) ||
+                                    v.subject.toLowerCase().includes(videoFilter.search.toLowerCase()) ||
+                                    v.author.toLowerCase().includes(videoFilter.search.toLowerCase());
+                const matchSubj = videoFilter.subject === "Все" || v.subject === videoFilter.subject;
+                const matchLevel = videoFilter.level === "Все" || v.level === videoFilter.level;
+                return matchSearch && matchSubj && matchLevel;
+            });
+
+            const isFiltering = videoFilter.search.trim() !== "" || videoFilter.subject !== "Все" || videoFilter.level !== "Все";
+
+            const continueList = filtered.filter(v => v.section === "continue");
+            const popularList = filtered.filter(v => v.section === "popular");
+            const recList = filtered.filter(v => v.section === "recommended");
+
+            return `
+            <div class="space-y-8 animate-fade-in">
+                <!-- Заголовок и поиск -->
+                <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+                    <div>
+                        <h1 class="text-3xl font-display font-extrabold text-white">Видеохостинг</h1>
+                        <p class="text-sm text-gray-400">Образовательные курсы с автоматическими конспектами и тестами от нейросети</p>
+                    </div>
+                    <div class="flex flex-col sm:flex-row gap-3">
+                        <div class="relative">
+                            <i data-lucide="search" class="w-4 h-4 text-gray-400 absolute left-3.5 top-1/2 -translate-y-1/2"></i>
+                            <input type="text" value="${videoFilter.search}" oninput="videoFilter.search=this.value; renderCurrentTab()" placeholder="Поиск видео, темы, автора..." class="w-full sm:w-72 pl-10 pr-4 py-2.5 rounded-xl bg-card border border-border text-sm text-white placeholder-gray-500 focus:outline-none focus:border-purple-500">
+                        </div>
+                        <select onchange="videoFilter.level=this.value; renderCurrentTab()" class="px-4 py-2.5 rounded-xl bg-card border border-border text-sm text-gray-200 focus:outline-none focus:border-purple-500">
+                            ${levels.map(l => `<option value="${l}" ${videoFilter.level === l ? "selected" : ""}>Сложность: ${l}</option>`).join("")}
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Фильтр по предметам -->
+                <div class="flex items-center gap-2 overflow-x-auto pb-2">
+                    ${subjects.map(s => `
+                        <button onclick="videoFilter.subject='${s}'; renderCurrentTab()" class="px-4 py-2 rounded-xl text-xs sm:text-sm font-medium whitespace-nowrap transition-all ${videoFilter.subject === s ? "brand-gradient text-white shadow-md shadow-purple-600/20" : "bg-card border border-border text-gray-300 hover:border-purple-500/50"}">
+                            ${s}
+                        </button>
+                    `).join("")}
+                </div>
+
+                ${filtered.length === 0 ? `
+                    <div class="p-12 rounded-2xl bg-card border border-border text-center space-y-3">
+                        <i data-lucide="video-off" class="w-10 h-10 text-gray-500 mx-auto"></i>
+                        <div class="text-lg font-semibold text-white">Видеоуроки не найдены</div>
+                        <p class="text-sm text-gray-400">Попробуйте изменить фильтры или сбросить поисковый запрос</p>
+                        <button onclick="videoFilter={search:'',subject:'Все',level:'Все'}; renderCurrentTab()" class="px-4 py-2 rounded-xl bg-purple-600/20 text-purple-300 border border-purple-500/40 text-sm font-medium">Сбросить фильтры</button>
+                    </div>
+                ` : isFiltering ? `
+                    <section class="space-y-4">
+                        <h2 class="text-xl font-display font-bold text-white">Результаты поиска (${filtered.length})</h2>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+                            ${filtered.map(v => renderVideoCard(v)).join("")}
+                        </div>
+                    </section>
+                ` : `
+                    <!-- Продолжить обучение -->
+                    ${continueList.length ? `
+                    <section class="space-y-4">
+                        <div class="flex items-center gap-2">
+                            <i data-lucide="history" class="w-5 h-5 text-purple-400"></i>
+                            <h2 class="text-xl font-display font-bold text-white">Продолжить обучение</h2>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+                            ${continueList.map(v => renderVideoCard(v)).join("")}
+                        </div>
+                    </section>` : ""}
+
+                    <!-- Новые и популярные -->
+                    ${popularList.length ? `
+                    <section class="space-y-4">
+                        <div class="flex items-center gap-2">
+                            <i data-lucide="flame" class="w-5 h-5 text-pink-400"></i>
+                            <h2 class="text-xl font-display font-bold text-white">Новые и популярные</h2>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
+                            ${popularList.map(v => renderVideoCard(v, true)).join("")}
+                        </div>
+                    </section>` : ""}
+
+                    <!-- Рекомендовано нейросетью -->
+                    ${recList.length ? `
+                    <section class="space-y-4">
+                        <div class="flex items-center gap-2">
+                            <i data-lucide="sparkles" class="w-5 h-5 text-purple-400"></i>
+                            <h2 class="text-xl font-display font-bold text-white">Рекомендовано нейросетью</h2>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+                            ${recList.map(v => renderVideoCard(v)).join("")}
+                        </div>
+                    </section>` : ""}
+                `}
+            </div>
+            `;
+        }
+
+        function renderVideoCard(v, compact = false) {
+            return `
+            <div onclick="openVideoModal('${v.id}')" class="group cursor-pointer rounded-2xl bg-card border border-border hover:border-purple-500/70 overflow-hidden transition-all duration-300 hover:-translate-y-1 flex flex-col">
+                <!-- Обложка видео -->
+                <div class="relative ${compact ? "h-44" : "h-44"} bg-gradient-to-br ${v.gradient} p-4 flex flex-col justify-between overflow-hidden">
+                    <div class="absolute inset-0 bg-black/25 group-hover:bg-black/15 transition-colors"></div>
+                    <div class="relative z-10 flex items-center justify-between gap-2">
+                        <span class="px-2.5 py-1 rounded-lg bg-black/45 backdrop-blur-sm text-[11px] font-semibold text-white border border-white/10">${v.subject}</span>
+                        <span class="px-2 py-0.5 rounded-lg bg-black/45 backdrop-blur-sm text-[11px] text-gray-200">${v.duration}</span>
+                    </div>
+                    <!-- Центральная кнопка Play -->
+                    <div class="relative z-10 my-auto flex flex-col items-center text-center gap-2">
+                        <div class="w-12 h-12 rounded-full bg-white/20 backdrop-blur-md border border-white/30 flex items-center justify-center group-hover:scale-110 group-hover:bg-purple-600 transition-all shadow-lg">
+                            <i data-lucide="play" class="w-5 h-5 text-white fill-white ml-0.5"></i>
+                        </div>
+                    </div>
+                    <div class="relative z-10 flex items-center justify-between text-[11px] text-white/85">
+                        <span>${v.modules}</span>
+                        <span class="px-2 py-0.5 rounded bg-white/15">${v.level}</span>
+                    </div>
+                </div>
+
+                <!-- Информация -->
+                <div class="p-4 flex-1 flex flex-col justify-between gap-3">
+                    <div>
+                        <h3 class="font-display font-bold text-white text-sm sm:text-base line-clamp-2 group-hover:text-purple-300 transition-colors">${v.title}</h3>
+                        <p class="text-xs text-gray-400 mt-1">${v.author}</p>
+                    </div>
+                    ${v.progress > 0 ? `
+                        <div class="space-y-1">
+                            <div class="flex justify-between text-[11px] text-gray-400">
+                                <span>Прогресс</span>
+                                <span class="text-purple-300 font-semibold">${v.progress}%</span>
+                            </div>
+                            <div class="w-full h-1.5 rounded-full bg-bg overflow-hidden">
+                                <div class="h-full rounded-full brand-gradient" style="width: ${v.progress}%"></div>
+                            </div>
+                        </div>
+                    ` : `
+                        <div class="flex items-center justify-between text-xs text-gray-400 pt-1 border-t border-border/60">
+                            <span class="flex items-center gap-1"><i data-lucide="thumbs-up" class="w-3.5 h-3.5 text-purple-400"></i> ${v.likes}</span>
+                            <span class="text-purple-400 font-medium flex items-center gap-1"><i data-lucide="sparkles" class="w-3.5 h-3.5"></i> ИИ-конспект</span>
+                        </div>
+                    `}
+                </div>
+            </div>
+            `;
+        }
+
+        /* ==========================================================================
+           МОДАЛКА ВИДЕОПЛЕЕРА + ИИ-КОНСПЕКТ + МИНИ-ТЕСТ
+           ========================================================================== */
+        let currentModalVideoId = null;
+        let isPlayingSim = false;
+        let simProgress = 18;
+
+        function openVideoModal(videoId) {
+            const v = state.videos.find(x => x.id === videoId);
+            if (!v) return;
+            currentModalVideoId = videoId;
+            isPlayingSim = false;
+            simProgress = v.progress || 15;
+            clearInterval(playerTimer);
+
+            const html = `
+            <div class="p-5 sm:p-6 space-y-5">
+                <div class="flex items-start justify-between gap-4">
+                    <div>
+                        <div class="flex items-center gap-2 mb-1">
+                            <span class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-purple-500/20 text-purple-300 border border-purple-500/30">${v.subject}</span>
+                            <span class="text-xs text-gray-400">${v.modules} • ${v.level}</span>
+                        </div>
+                        <h2 class="text-xl sm:text-2xl font-display font-bold text-white">${v.title}</h2>
+                        <p class="text-xs text-gray-400">Преподаватель: ${v.author}</p>
+                    </div>
+                    <button onclick="closeModal()" class="p-2 rounded-xl bg-bg border border-border text-gray-400 hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
+                </div>
+
+                <!-- Интерактивная имитация видеоплеера -->
+                <div class="rounded-2xl overflow-hidden border border-border bg-black">
+                    <div class="relative h-56 sm:h-72 bg-gradient-to-br ${v.gradient} flex flex-col items-center justify-center p-6 text-center select-none">
+                        <div class="absolute inset-0 bg-black/40"></div>
+                        <div class="relative z-10 space-y-3 max-w-md">
+                            <div class="w-14 h-14 mx-auto rounded-2xl bg-white/15 backdrop-blur-md border border-white/25 flex items-center justify-center">
+                                <i data-lucide="${v.icon || "play"}" class="w-7 h-7 text-white"></i>
+                            </div>
+                            <div id="player-slide-text" class="text-sm sm:text-base font-medium text-white/95">
+                                Урок: ${v.title} — нажмите Play для запуска интерактивного просмотра
+                            </div>
+                            <button onclick="toggleVideoSim()" id="player-play-btn" class="px-5 py-2 rounded-xl brand-gradient text-white text-sm font-semibold inline-flex items-center gap-2 shadow-lg">
+                                <i data-lucide="play" class="w-4 h-4 fill-current"></i> Смотреть урок
+                            </button>
+                        </div>
+                    </div>
+                    <!-- Панель управления плеером -->
+                    <div class="bg-[#16161C] px-4 py-3 space-y-2">
+                        <input type="range" min="0" max="100" value="${simProgress}" id="player-scrubber" oninput="scrubVideoSim(this.value)" class="w-full accent-purple-500 cursor-pointer">
+                        <div class="flex items-center justify-between text-xs text-gray-400">
+                            <div class="flex items-center gap-3">
+                                <button onclick="toggleVideoSim()" class="text-white hover:text-purple-400 font-medium" id="player-mini-play">▶ Воспроизвести</button>
+                                <span id="player-time-label">${simProgress}% просмотрено</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <button onclick="voteVideo('${v.id}', 'like')" class="px-2.5 py-1 rounded-lg border ${v.userVote === 'like' ? 'bg-purple-600/30 border-purple-500 text-purple-200' : 'bg-card border-border text-gray-300 hover:border-purple-500'} flex items-center gap-1">
+                                    <i data-lucide="thumbs-up" class="w-3.5 h-3.5"></i> <span id="vid-likes-count">${v.likes}</span>
+                                </button>
+                                <button onclick="voteVideo('${v.id}', 'dislike')" class="px-2.5 py-1 rounded-lg border ${v.userVote === 'dislike' ? 'bg-rose-600/30 border-rose-500 text-rose-200' : 'bg-card border-border text-gray-300 hover:border-rose-500'} flex items-center gap-1">
+                                    <i data-lucide="thumbs-down" class="w-3.5 h-3.5"></i> <span id="vid-dislikes-count">${v.dislikes}</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Вкладки внутри модалки -->
+                <div class="flex flex-wrap items-center gap-2 border-b border-border pb-3">
+                    <button onclick="switchVideoModalTab('notes')" id="vtab-notes" class="px-4 py-2 rounded-xl text-sm font-semibold brand-gradient text-white flex items-center gap-1.5">
+                        <i data-lucide="sparkles" class="w-4 h-4"></i> Автоматический конспект (ИИ)
+                    </button>
+                    <button onclick="switchVideoModalTab('comments')" id="vtab-comments" class="px-4 py-2 rounded-xl text-sm font-medium bg-bg border border-border text-gray-300 hover:text-white flex items-center gap-1.5">
+                        <i data-lucide="message-circle" class="w-4 h-4"></i> Описание и комментарии (${v.comments.length})
+                    </button>
+                    <button onclick="launchMiniQuiz('${v.subject.replace(/'/g, "\\'")}', '${v.title.replace(/'/g, "\\'")}')" class="ml-auto px-4 py-2 rounded-xl text-sm font-semibold bg-emerald-600/20 text-emerald-300 border border-emerald-500/40 hover:bg-emerald-600/30 flex items-center gap-1.5">
+                        <i data-lucide="brain-circuit" class="w-4 h-4"></i> Пройти мини-тест по уроку
+                    </button>
+                </div>
+
+                <!-- Контент вкладки: ИИ-конспект -->
+                <div id="vpanel-notes" class="space-y-4">
+                    <div class="p-4 rounded-2xl bg-bg border border-purple-500/30 space-y-3">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                            <div>
+                                <h3 class="font-display font-bold text-white text-sm">Умный конспект от нейросети УчНейро</h3>
+                                <p class="text-xs text-gray-400">Ключевые тезисы, термины и формулы по теме «${v.title}»</p>
+                            </div>
+                            <button onclick="generateVideoSummary('${v.id}')" id="btn-gen-summary" class="px-4 py-2 rounded-xl brand-gradient brand-gradient-hover text-white text-xs sm:text-sm font-semibold flex items-center justify-center gap-2 shrink-0">
+                                <i data-lucide="wand-2" class="w-4 h-4"></i> Сгенерировать конспект с ИИ
+                            </button>
+                        </div>
+                        <div id="ai-video-summary-output" class="pt-2 border-t border-border/70 text-sm text-gray-300">
+                            ${v.cachedSummary ? formatAIText(v.cachedSummary) : '<p class="text-gray-400 text-xs">Нажмите кнопку выше, чтобы нейросеть Gemini сформировала краткий структурированный конспект этого видеоурока.</p>'}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Контент вкладки: Комментарии -->
+                <div id="vpanel-comments" class="hidden space-y-4">
+                    <p class="text-sm text-gray-300 leading-relaxed">${v.description}</p>
+                    <div class="space-y-3">
+                        <h4 class="text-sm font-bold text-white">Комментарии</h4>
+                        <div id="video-comments-list" class="space-y-2.5 max-h-48 overflow-y-auto">
+                            ${v.comments.length ? v.comments.map(c => `
+                                <div class="p-3 rounded-xl bg-bg border border-border">
+                                    <div class="flex items-center gap-2 text-xs mb-1">
+                                        <span class="font-semibold text-white">${c.author}</span>
+                                        <span class="px-2 py-0.5 rounded bg-purple-500/15 text-purple-300 text-[10px]">${c.role}</span>
+                                    </div>
+                                    <p class="text-sm text-gray-300">${c.text}</p>
+                                </div>
+                            `).join("") : '<p class="text-xs text-gray-500">Пока нет комментариев. Будьте первым!</p>'}
+                        </div>
+                        <form onsubmit="addVideoComment(event, '${v.id}')" class="flex gap-2">
+                            <input type="text" id="new-video-comment" required placeholder="Написать вопрос или отзыв к уроку..." class="flex-1 px-3.5 py-2 rounded-xl bg-bg border border-border text-sm text-white focus:outline-none focus:border-purple-500">
+                            <button type="submit" class="px-4 py-2 rounded-xl brand-gradient text-white text-sm font-semibold">Отправить</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            `;
+
+            openModal(html);
+        }
+
+        function switchVideoModalTab(tab) {
+            const notesPanel = document.getElementById("vpanel-notes");
+            const commentsPanel = document.getElementById("vpanel-comments");
+            const tNotes = document.getElementById("vtab-notes");
+            const tComments = document.getElementById("vtab-comments");
+            if (tab === "notes") {
+                notesPanel.classList.remove("hidden");
+                commentsPanel.classList.add("hidden");
+                tNotes.className = "px-4 py-2 rounded-xl text-sm font-semibold brand-gradient text-white flex items-center gap-1.5";
+                tComments.className = "px-4 py-2 rounded-xl text-sm font-medium bg-bg border border-border text-gray-300 hover:text-white flex items-center gap-1.5";
+            } else {
+                commentsPanel.classList.remove("hidden");
+                notesPanel.classList.add("hidden");
+                tComments.className = "px-4 py-2 rounded-xl text-sm font-semibold brand-gradient text-white flex items-center gap-1.5";
+                tNotes.className = "px-4 py-2 rounded-xl text-sm font-medium bg-bg border border-border text-gray-300 hover:text-white flex items-center gap-1.5";
+            }
+        }
+
+        function toggleVideoSim() {
+            const v = state.videos.find(x => x.id === currentModalVideoId);
+            if (!v) return;
+            isPlayingSim = !isPlayingSim;
+            const playBtn = document.getElementById("player-play-btn");
+            const miniBtn = document.getElementById("player-mini-play");
+            const slideText = document.getElementById("player-slide-text");
+
+            if (isPlayingSim) {
+                playBtn.innerHTML = `<i data-lucide="pause" class="w-4 h-4"></i> Пауза`;
+                miniBtn.textContent = "⏸ Пауза";
+                const slides = [
+                    `Введение в тему: ${v.title}`,
+                    `Ключевые понятия и разбор на примерах (${v.subject})`,
+                    `Практическое задание и типовые ошибки на экзамене`,
+                    `Подведение итогов и рекомендации к тесту`
+                ];
+                playerTimer = setInterval(() => {
+                    simProgress = Math.min(100, simProgress + 2);
+                    const scrubber = document.getElementById("player-scrubber");
+                    const label = document.getElementById("player-time-label");
+                    if (scrubber) scrubber.value = simProgress;
+                    if (label) label.textContent = `${simProgress}% просмотрено`;
+                    if (slideText) slideText.textContent = slides[Math.min(3, Math.floor(simProgress / 25))];
+
+                    v.progress = Math.max(v.progress || 0, simProgress);
+                    saveState();
+
+                    if (simProgress >= 100) {
+                        clearInterval(playerTimer);
+                        isPlayingSim = false;
+                        playBtn.innerHTML = `<i data-lucide="check" class="w-4 h-4"></i> Урок завершён!`;
+                        miniBtn.textContent = "↻ Заново";
+                        rewardProgress(1, 5, 0);
+                        addActivity(`Завершён просмотр видеоурока «${v.title}»`, "play-circle");
+                        showToast("Урок просмотрен! +1 учебный час и +5% к достижениям", "success");
+                        lucide.createIcons();
+                    }
+                }, 400);
+            } else {
+                clearInterval(playerTimer);
+                playBtn.innerHTML = `<i data-lucide="play" class="w-4 h-4 fill-current"></i> Продолжить`;
+                miniBtn.textContent = "▶ Воспроизвести";
+            }
+            lucide.createIcons();
+        }
+
+        function scrubVideoSim(val) {
+            simProgress = parseInt(val, 10);
+            const label = document.getElementById("player-time-label");
+            if (label) label.textContent = `${simProgress}% просмотрено`;
+            const v = state.videos.find(x => x.id === currentModalVideoId);
+            if (v) {
+                v.progress = Math.max(v.progress || 0, simProgress);
+                saveState();
+            }
+        }
+
+        function voteVideo(id, type) {
+            const v = state.videos.find(x => x.id === id);
+            if (!v) return;
+            if (v.userVote === type) {
+                if (type === "like") v.likes--; else v.dislikes--;
+                v.userVote = null;
+            } else {
+                if (v.userVote === "like") v.likes--;
+                if (v.userVote === "dislike") v.dislikes--;
+                if (type === "like") v.likes++; else v.dislikes++;
+                v.userVote = type;
+            }
+            saveState();
+            openVideoModal(id);
+        }
+
+        function addVideoComment(e, id) {
+            e.preventDefault();
+            const input = document.getElementById("new-video-comment");
+            const text = input.value.trim();
+            if (!text) return;
+            const v = state.videos.find(x => x.id === id);
+            v.comments.unshift({
+                author: state.user.name,
+                role: state.role === "teacher" ? "Преподаватель" : "Ученик",
+                text
+            });
+            saveState();
+            openVideoModal(id);
+            switchVideoModalTab("comments");
+            showToast("Комментарий опубликован!", "success");
+        }
+
+        async function generateVideoSummary(videoId) {
+            const v = state.videos.find(x => x.id === videoId);
+            if (!v) return;
+            const out = document.getElementById("ai-video-summary-output");
+            const btn = document.getElementById("btn-gen-summary");
+            btn.disabled = true;
+            btn.innerHTML = `<i data-lucide="loader-2" class="w-4 h-4 animate-spin"></i> Генерация...`;
+            out.innerHTML = `<div class="flex items-center gap-2 text-purple-300 text-sm py-4"><span class="w-2 h-2 rounded-full bg-purple-400 typing-dot"></span><span class="w-2 h-2 rounded-full bg-purple-400 typing-dot"></span><span class="w-2 h-2 rounded-full bg-purple-400 typing-dot"></span> Нейросеть УчНейро составляет структурированный конспект...</div>`;
+            lucide.createIcons();
+
+            try {
+                const prompt = `Составь краткий, понятный и хорошо структурированный учебный конспект для школьника/студента по видеоуроку "${v.title}" (предмет: ${v.subject}, уровень: ${v.level}). Включи: 1) Главную идею, 2) 4–5 ключевых тезисов или формул, 3) Совет для запоминания. Отвечай на русском языке в формате Markdown.`;
+                const summary = await callGeminiAPI(prompt, "Ты — образовательная нейросеть УчНейро. Пиши ясно, структурированно и увлекательно.");
+                v.cachedSummary = summary;
+                saveState();
+                out.innerHTML = formatAIText(summary);
+                addActivity(`Сгенерирован ИИ-конспект по уроку «${v.title}»`, "sparkles");
+                showToast("Конспект готов!", "success");
+            } catch (err) {
+                out.innerHTML = `<p class="text-rose-400 text-sm">Не удалось связаться с нейросетью. Пожалуйста, попробуйте ещё раз чуть позже.</p>`;
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = `<i data-lucide="wand-2" class="w-4 h-4"></i> Обновить конспект`;
+                lucide.createIcons();
+            }
+        }
+
+        function launchMiniQuiz(subject, topic) {
+            closeModal();
+            state.aiSubTab = "quiz";
+            activeQuiz.subject = subject;
+            activeQuiz.topic = topic;
+            navigateTo("ai");
+            setTimeout(() => generateAIQuiz(), 150);
+        }
+
+        /* ==========================================================================
+           6. РАЗДЕЛ 3: СТАТЬИ (БАЗА ЗНАНИЙ)
+           ========================================================================== */
+        function renderArticles() {
+            const categories = [
+                { name: "Все", icon: "layout-grid" },
+                { name: "Математика", icon: "sigma" },
+                { name: "Естественные науки", icon: "flask-conical" },
+                { name: "Литература", icon: "feather" },
+                { name: "История", icon: "landmark" },
+                { name: "Программирование", icon: "code-2" },
+                { name: "Избранное", icon: "bookmark" }
+            ];
+
+            const featured = state.articles.filter(a => a.featured);
+            const filtered = state.articles.filter(a => {
+                if (articleFilter.category === "Все") return true;
+                if (articleFilter.category === "Избранное") return a.bookmarked;
+                return a.category === articleFilter.category;
+            });
+
+            const pythonArticle = state.articles.find(a => a.id === "a3");
+
+            return `
+            <div class="space-y-8 animate-fade-in">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div class="flex items-center gap-3">
+                        <div class="w-11 h-11 rounded-2xl brand-gradient flex items-center justify-center text-white shadow-lg shadow-purple-600/20">
+                            <i data-lucide="book-open" class="w-5 h-5"></i>
+                        </div>
+                        <div>
+                            <h1 class="text-3xl font-display font-extrabold text-white">База знаний</h1>
+                            <p class="text-sm text-gray-400">Образовательные статьи, конспекты и методические материалы</p>
+                        </div>
+                    </div>
+                    <button onclick="openWriteArticleModal()" class="px-5 py-2.5 rounded-xl brand-gradient brand-gradient-hover text-white font-semibold text-sm flex items-center justify-center gap-2 shadow-lg shadow-purple-600/20">
+                        <i data-lucide="pen-line" class="w-4 h-4"></i> Написать статью
+                    </button>
+                </div>
+
+                <!-- Актуальные темы -->
+                <section class="space-y-4">
+                    <h2 class="text-xl font-display font-bold text-white">Актуальные темы</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                        ${featured.map(a => `
+                            <div class="rounded-2xl bg-card border border-border hover:border-purple-500/60 overflow-hidden transition-all flex flex-col">
+                                <div class="h-36 bg-gradient-to-r ${a.gradient} p-4 relative flex flex-col justify-between">
+                                    <div class="flex justify-between items-start">
+                                        <span class="px-3 py-1 rounded-full bg-black/40 backdrop-blur-sm text-xs font-medium text-white">${a.category}</span>
+                                        <button onclick="toggleBookmark('${a.id}')" class="w-9 h-9 rounded-full bg-white text-[#121216] flex items-center justify-center shadow hover:scale-105 transition-transform" title="В избранное">
+                                            <i data-lucide="bookmark" class="w-4 h-4 ${a.bookmarked ? 'fill-purple-600 text-purple-600' : ''}"></i>
+                                        </button>
+                                    </div>
+                                    <div class="inline-flex items-center gap-2 bg-white text-[#121216] px-3 py-1 rounded-full w-fit shadow-md">
+                                        <span class="w-5 h-5 rounded-full bg-purple-600 text-white text-[10px] font-bold flex items-center justify-center">${a.author[0]}</span>
+                                        <span class="text-xs font-bold">${a.author}</span>
+                                    </div>
+                                </div>
+                                <div class="p-5 flex-1 flex flex-col justify-between gap-4">
+                                    <div>
+                                        <h3 class="text-lg font-display font-bold text-white">${a.title}</h3>
+                                        <p class="text-sm text-gray-400 mt-1.5">${a.summary}</p>
+                                    </div>
+                                    <div class="flex items-center justify-between pt-3 border-t border-border/70">
+                                        <div class="flex items-center gap-4 text-xs text-gray-300">
+                                            <span class="flex items-center gap-1"><i data-lucide="hourglass" class="w-3.5 h-3.5 text-purple-400"></i> ${a.duration}</span>
+                                            <span class="flex items-center gap-1"><i data-lucide="star" class="w-3.5 h-3.5 text-amber-400 fill-amber-400"></i> ${a.rating}</span>
+                                        </div>
+                                        <button onclick="openArticleModal('${a.id}')" class="px-5 py-2 rounded-xl brand-gradient text-white text-xs font-semibold hover:opacity-95 transition-opacity">
+                                            ${a.read ? 'Прочитано ✓' : 'Читать'}
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        `).join("")}
+                    </div>
+                </section>
+
+                <!-- Категории с иконками -->
+                <section class="space-y-4">
+                    <h2 class="text-xl font-display font-bold text-white">Категории</h2>
+                    <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-3">
+                        ${categories.map(c => `
+                            <button onclick="articleFilter.category='${c.name}'; renderCurrentTab()" class="p-4 rounded-2xl border transition-all flex flex-col items-center justify-center gap-2 text-center ${articleFilter.category === c.name ? 'bg-purple-600/20 border-purple-500 text-white shadow-lg shadow-purple-500/10' : 'bg-card border-border text-gray-300 hover:border-purple-500/50'}">
+                                <i data-lucide="${c.icon}" class="w-5 h-5 ${articleFilter.category === c.name ? 'text-purple-400' : 'text-gray-400'}"></i>
+                                <span class="text-xs font-semibold">${c.name}</span>
+                            </button>
+                        `).join("")}
+                    </div>
+                </section>
+
+                <!-- Блок прогресса изучения (как на макете) -->
+                ${pythonArticle ? `
+                <section class="space-y-3">
+                    <h2 class="text-xl font-display font-bold text-white">Моё чтение</h2>
+                    <div onclick="openArticleModal('${pythonArticle.id}')" class="cursor-pointer p-4 sm:p-5 rounded-2xl bg-card border border-border hover:border-purple-500/60 flex flex-col sm:flex-row sm:items-center justify-between gap-4 transition-all">
+                        <div class="flex items-center gap-4">
+                            <div class="w-16 h-16 rounded-xl bg-gradient-to-br ${pythonArticle.gradient} flex items-center justify-center shrink-0">
+                                <i data-lucide="code-2" class="w-7 h-7 text-white"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-display font-bold text-white">${pythonArticle.title}</h3>
+                                <p class="text-xs text-gray-400">${pythonArticle.author} • ${pythonArticle.duration}</p>
+                                <div class="mt-2 flex items-center gap-3">
+                                    <div class="w-40 sm:w-56 h-2 rounded-full bg-bg overflow-hidden">
+                                        <div class="h-full rounded-full brand-gradient" style="width: ${pythonArticle.read ? 100 : pythonArticle.progress}%"></div>
+                                    </div>
+                                    <span class="text-xs font-semibold text-purple-300">Прогресс ${pythonArticle.read ? 100 : pythonArticle.progress}%</span>
+                                </div>
+                            </div>
+                        </div>
+                        <button onclick="event.stopPropagation(); toggleBookmark('${pythonArticle.id}')" class="w-10 h-10 rounded-full brand-gradient text-white flex items-center justify-center self-end sm:self-center shrink-0">
+                            <i data-lucide="bookmark" class="w-4 h-4 ${pythonArticle.bookmarked ? 'fill-white' : ''}"></i>
+                        </button>
+                    </div>
+                </section>` : ""}
+
+                <!-- Список статей по выбранной категории -->
+                <section class="space-y-4">
+                    <h2 class="text-xl font-display font-bold text-white">Все статьи (${filtered.length})</h2>
+                    ${filtered.length === 0 ? `
+                        <div class="p-8 rounded-2xl bg-card border border-border text-center text-gray-400 text-sm">
+                            В этой категории пока нет статей. Вы можете добавить статью в избранное или написать свою!
+                        </div>
+                    ` : `
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                            ${filtered.map(a => `
+                                <div class="p-5 rounded-2xl bg-card border border-border hover:border-purple-500/50 transition-all flex flex-col justify-between gap-4">
+                                    <div class="space-y-2">
+                                        <div class="flex items-center justify-between">
+                                            <span class="text-[11px] font-semibold px-2.5 py-0.5 rounded-full bg-purple-500/15 text-purple-300">${a.category}</span>
+                                            <button onclick="toggleBookmark('${a.id}')" class="text-gray-400 hover:text-purple-400">
+                                                <i data-lucide="bookmark" class="w-4 h-4 ${a.bookmarked ? 'fill-purple-500 text-purple-400' : ''}"></i>
+                                            </button>
+                                        </div>
+                                        <h3 class="font-display font-bold text-white text-base">${a.title}</h3>
+                                        <p class="text-xs text-gray-400 line-clamp-2">${a.summary}</p>
+                                    </div>
+                                    <div class="flex items-center justify-between pt-3 border-t border-border/60 text-xs">
+                                        <span class="text-gray-400">${a.author}</span>
+                                        <button onclick="openArticleModal('${a.id}')" class="text-purple-400 hover:text-purple-300 font-semibold flex items-center gap-1">
+                                            ${a.read ? 'Прочитано ✓' : 'Открыть'} <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            `).join("")}
+                        </div>
+                    `}
+                </section>
+            </div>
+            `;
+        }
+
+        function toggleBookmark(id) {
+            const a = state.articles.find(x => x.id === id);
+            if (!a) return;
+            a.bookmarked = !a.bookmarked;
+            saveState();
+            showToast(a.bookmarked ? "Статья добавлена в Избранное" : "Удалено из Избранного", "info");
+            renderCurrentTab();
+        }
+
+        function openArticleModal(id) {
+            const a = state.articles.find(x => x.id === id);
+            if (!a) return;
+            const html = `
+            <div class="p-6 space-y-5">
+                <div class="flex items-start justify-between gap-4">
+                    <div>
+                        <span class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-purple-500/20 text-purple-300">${a.category}</span>
+                        <h2 class="text-2xl font-display font-bold text-white mt-2">${a.title}</h2>
+                        <div class="flex items-center gap-3 text-xs text-gray-400 mt-1">
+                            <span>Автор: ${a.author}</span> • <span>${a.duration}</span> • <span>★ ${a.rating}</span>
+                        </div>
+                    </div>
+                    <button onclick="closeModal()" class="p-2 rounded-xl bg-bg border border-border text-gray-400 hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
+                </div>
+                <div class="p-5 rounded-2xl bg-bg border border-border text-sm text-gray-200 leading-relaxed whitespace-pre-line">
+                    ${a.content}
+                </div>
+                <div class="flex flex-wrap items-center justify-between gap-3 pt-2">
+                    <button onclick="toggleBookmark('${a.id}'); openArticleModal('${a.id}')" class="px-4 py-2.5 rounded-xl bg-bg border border-border hover:border-purple-500 text-sm font-medium text-gray-200 flex items-center gap-2">
+                        <i data-lucide="bookmark" class="w-4 h-4 ${a.bookmarked ? 'fill-purple-500 text-purple-400' : ''}"></i> ${a.bookmarked ? 'В избранном' : 'В избранное'}
+                    </button>
+                    <button onclick="markArticleRead('${a.id}')" class="px-5 py-2.5 rounded-xl ${a.read ? 'bg-emerald-600/20 text-emerald-300 border border-emerald-500/40' : 'brand-gradient text-white'} text-sm font-semibold flex items-center gap-2">
+                        <i data-lucide="check-circle" class="w-4 h-4"></i> ${a.read ? 'Статья прочитана!' : 'Отметить как прочитано (+1 час)'}
+                    </button>
+                </div>
+            </div>`;
+            openModal(html);
+        }
+
+        function markArticleRead(id) {
+            const a = state.articles.find(x => x.id === id);
+            if (!a) return;
+            if (!a.read) {
+                a.read = true;
+                a.progress = 100;
+                rewardProgress(1, 4, 0);
+                addActivity(`Прочитана статья «${a.title}»`, "book-open");
+                showToast("Отлично! Прогресс обновлён (+1 час, +4% к достижениям)", "success");
+            }
+            closeModal();
+            renderCurrentTab();
+        }
+
+        function openWriteArticleModal() {
+            const html = `
+            <form onsubmit="submitNewArticle(event)" class="p-6 space-y-4">
+                <div class="flex items-center justify-between">
+                    <h2 class="text-xl font-display font-bold text-white">Написать статью в Базу знаний</h2>
+                    <button type="button" onclick="closeModal()" class="p-2 rounded-xl bg-bg border border-border text-gray-400 hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
+                </div>
+                <div class="space-y-3">
+                    <div>
+                        <label class="text-xs text-gray-400 block mb-1">Заголовок статьи</label>
+                        <input type="text" id="art-title" required placeholder="Например: Как быстро решать квадратные уравнения" class="w-full px-4 py-2.5 rounded-xl bg-bg border border-border text-sm text-white focus:outline-none focus:border-purple-500">
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div>
+                            <label class="text-xs text-gray-400 block mb-1">Категория</label>
+                            <select id="art-cat" class="w-full px-4 py-2.5 rounded-xl bg-bg border border-border text-sm text-white focus:outline-none focus:border-purple-500">
+                                <option>Математика</option>
+                                <option>Естественные науки</option>
+                                <option>Литература</option>
+                                <option>История</option>
+                                <option>Программирование</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="text-xs text-gray-400 block mb-1">Время чтения</label>
+                            <input type="text" id="art-dur" value="15 мин" class="w-full px-4 py-2.5 rounded-xl bg-bg border border-border text-sm text-white focus:outline-none focus:border-purple-500">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="text-xs text-gray-400 block mb-1">Текст статьи</label>
+                        <textarea id="art-content" rows="6" required placeholder="Поделитесь знаниями, конспектом или методикой..." class="w-full px-4 py-2.5 rounded-xl bg-bg border border-border text-sm text-white focus:outline-none focus:border-purple-500"></textarea>
+                    </div>
+                </div>
+                <div class="flex justify-end gap-2 pt-2">
+                    <button type="button" onclick="closeModal()" class="px-4 py-2 rounded-xl bg-bg border border-border text-sm text-gray-300">Отмена</button>
+                    <button type="submit" class="px-5 py-2 rounded-xl brand-gradient text-white text-sm font-semibold">Опубликовать</button>
+                </div>
+            </form>`;
+            openModal(html);
+        }
+
+        function submitNewArticle(e) {
+            e.preventDefault();
+            const title = document.getElementById("art-title").value.trim();
+            const category = document.getElementById("art-cat").value;
+            const duration = document.getElementById("art-dur").value.trim() || "15 мин";
+            const content = document.getElementById("art-content").value.trim();
+
+            state.articles.unshift({
+                id: "a_" + Date.now(),
+                title,
+                author: state.user.name,
+                duration,
+                rating: "5/5",
+                category,
+                featured: false,
+                bookmarked: false,
+                read: false,
+                progress: 0,
+                gradient: "from-purple-600 to-pink-700",
+                summary: content.slice(0, 110) + (content.length > 110 ? "..." : ""),
+                content
+            });
+            saveState();
+            addActivity(`Опубликована статья «${title}»`, "pen-line");
+            closeModal();
+            renderCurrentTab();
+            showToast("Статья опубликована в Базе знаний!", "success");
+        }
+
+        /* ==========================================================================
+           7. РАЗДЕЛ 4: ФОРУМ («ФОРУМ УЧНЕЙРО»)
+           ========================================================================== */
+        function renderForum() {
+            const categories = ["Все", "Технологии", "Науки", "Подготовка к ЕГЭ", "Программирование"];
+            const filtered = state.forumPosts.filter(p => {
+                const matchCat = forumFilter.category === "Все" || p.category === forumFilter.category;
+                const matchSearch = p.title.toLowerCase().includes(forumFilter.search.toLowerCase()) ||
+                                    p.body.toLowerCase().includes(forumFilter.search.toLowerCase());
+                return matchCat && matchSearch;
+            });
+
+            return `
+            <div class="space-y-8 animate-fade-in">
+                <!-- Шапка форума по макету -->
+                <div class="relative overflow-hidden rounded-3xl bg-card border border-border">
+                    <div class="h-32 sm:h-40 bg-gradient-to-r from-purple-900/80 via-[#251838] to-pink-900/70 relative flex items-center justify-center">
+                        <div class="text-center z-10">
+                            <div class="w-16 h-16 mx-auto rounded-full bg-white p-1.5 shadow-xl mb-2">
+                                <svg viewBox="0 0 64 64" class="w-full h-full" fill="none">
+                                    <path d="M22 23L8 8L27 18L22 23Z" fill="#C084FC"/>
+                                    <path d="M35 20C45 20 53 28 52 40C51 47 46 53 40 56C43 49 44 42 40 35Z" fill="#EC4899"/>
+                                    <path d="M23 22C26 18 33 18 38 23C42 27 44 35 42 44C40 50 37 55 34 58H21C23 50 24 44 21 39C18 38 14 38 12 35C10 32 12 28 16 26L23 22Z" fill="#1E1E26"/>
+                                    <circle cx="24" cy="29" r="2.2" fill="#FFFFFF"/>
+                                    <polygon points="33,6 52,13 33,20 14,13" fill="#7C3AED"/>
+                                </svg>
+                            </div>
+                            <h1 class="text-2xl sm:text-3xl font-display font-extrabold text-white">Форум УчНейро</h1>
+                        </div>
+                    </div>
+
+                    <div class="p-5 sm:p-6 flex flex-col md:flex-row items-center justify-between gap-6">
+                        <!-- Статистика форума -->
+                        <div class="flex items-center gap-6 sm:gap-10">
+                            <div class="text-center">
+                                <div class="text-xl sm:text-2xl font-display font-extrabold text-white flex items-center justify-center gap-1.5">
+                                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span> 42
+                                </div>
+                                <div class="text-xs text-gray-400">Онлайн</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-xl sm:text-2xl font-display font-extrabold text-white">567</div>
+                                <div class="text-xs text-gray-400">Экспертов</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-xl sm:text-2xl font-display font-extrabold text-white">${983 + state.forumPosts.length}</div>
+                                <div class="text-xs text-gray-400">Обсуждений</div>
+                            </div>
+                        </div>
+
+                        <!-- Кнопки действий -->
+                        <div class="flex flex-wrap items-center gap-3 w-full md:w-auto">
+                            <button onclick="openNewForumPostModal()" class="flex-1 md:flex-none px-5 py-2.5 rounded-full brand-gradient brand-gradient-hover text-white text-sm font-semibold shadow-lg shadow-purple-600/25 flex items-center justify-center gap-2">
+                                <i data-lucide="plus-circle" class="w-4 h-4"></i> Начать новое обсуждение
+                            </button>
+                            <div class="relative flex-1 md:flex-none">
+                                <i data-lucide="search" class="w-4 h-4 text-purple-200 absolute left-3.5 top-1/2 -translate-y-1/2"></i>
+                                <input type="text" value="${forumFilter.search}" oninput="forumFilter.search=this.value; renderCurrentTab()" placeholder="Найти тему..." class="w-full md:w-52 pl-9 pr-4 py-2.5 rounded-full bg-purple-600/20 border border-purple-500/50 text-sm text-white placeholder-purple-200/70 focus:outline-none focus:border-purple-400">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Категории -->
+                <div class="flex items-center gap-2 overflow-x-auto pb-1">
+                    ${categories.map(c => `
+                        <button onclick="forumFilter.category='${c}'; renderCurrentTab()" class="px-4 py-2 rounded-xl text-xs sm:text-sm font-medium whitespace-nowrap transition-all ${forumFilter.category === c ? 'brand-gradient text-white' : 'bg-card border border-border text-gray-300 hover:border-purple-500/50'}">
+                            ${c}
+                        </button>
+                    `).join("")}
+                </div>
+
+                <!-- Список обсуждений -->
+                <div class="space-y-4">
+                    ${filtered.map(p => `
+                        <div onclick="openForumThreadModal('${p.id}')" class="cursor-pointer p-5 rounded-2xl bg-card border border-border hover:border-purple-500/60 transition-all space-y-3">
+                            <div class="flex flex-wrap items-center justify-between gap-2">
+                                <div class="flex flex-wrap items-center gap-2">
+                                    <span class="px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-purple-500/15 text-purple-300">${p.category}</span>
+                                    ${p.solved ? `<span class="px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 flex items-center gap-1"><i data-lucide="check" class="w-3 h-3"></i> Решено</span>` : ""}
+                                    ${p.hasTeacherReply ? `<span class="px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-pink-500/15 text-pink-300 border border-pink-500/30 flex items-center gap-1"><i data-lucide="graduation-cap" class="w-3 h-3"></i> Ответ преподавателя</span>` : ""}
+                                </div>
+                                <span class="text-xs text-gray-500">${p.createdAt}</span>
+                            </div>
+
+                            <div>
+                                <h3 class="text-lg font-display font-bold text-white hover:text-purple-300 transition-colors">${p.title}</h3>
+                                <p class="text-sm text-gray-400 mt-1 line-clamp-2">${p.body}</p>
+                            </div>
+
+                            <div class="flex flex-wrap items-center justify-between gap-3 pt-2 border-t border-border/60 text-xs text-gray-400">
+                                <div class="flex items-center gap-2">
+                                    <span class="font-medium text-gray-300">${p.author}</span>
+                                    <div class="flex gap-1.5">
+                                        ${p.tags.map(t => `<span class="px-2 py-0.5 rounded bg-bg text-gray-400">#${t}</span>`).join("")}
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-4">
+                                    <button onclick="event.stopPropagation(); toggleForumLike('${p.id}')" class="flex items-center gap-1 ${p.liked ? 'text-purple-400 font-semibold' : 'hover:text-white'}">
+                                        <i data-lucide="thumbs-up" class="w-4 h-4"></i> ${p.likes}
+                                    </button>
+                                    <span class="flex items-center gap-1"><i data-lucide="message-square" class="w-4 h-4"></i> ${p.replies.length}</span>
+                                </div>
+                            </div>
+                        </div>
+                    `).join("")}
+                </div>
+            </div>
+            `;
+        }
+
+        function toggleForumLike(id) {
+            const p = state.forumPosts.find(x => x.id === id);
+            if (!p) return;
+            p.liked = !p.liked;
+            p.likes += p.liked ? 1 : -1;
+            saveState();
+            renderCurrentTab();
+        }
+
+        function openForumThreadModal(id) {
+            const p = state.forumPosts.find(x => x.id === id);
+            if (!p) return;
+            const html = `
+            <div class="p-6 space-y-5">
+                <div class="flex items-start justify-between gap-4">
+                    <div class="space-y-1.5">
+                        <div class="flex flex-wrap items-center gap-2">
+                            <span class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-purple-500/20 text-purple-300">${p.category}</span>
+                            ${p.solved ? `<span class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-500/15 text-emerald-300">✓ Решено</span>` : ""}
+                        </div>
+                        <h2 class="text-xl font-display font-bold text-white">${p.title}</h2>
+                        <div class="text-xs text-gray-400">Автор: ${p.author} • ${p.createdAt}</div>
+                    </div>
+                    <button onclick="closeModal()" class="p-2 rounded-xl bg-bg border border-border text-gray-400 hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
+                </div>
+
+                <div class="p-4 rounded-2xl bg-bg border border-border text-sm text-gray-200 leading-relaxed">
+                    ${p.body}
+                </div>
+
+                <!-- Кнопка ИИ-эксперта прямо в ветке -->
+                <div class="flex flex-wrap items-center justify-between gap-2">
+                    <h3 class="text-sm font-bold text-white">Ответы (${p.replies.length})</h3>
+                    <button onclick="askAIForumExpert('${p.id}')" id="btn-forum-ai" class="px-4 py-2 rounded-xl bg-purple-600/20 hover:bg-purple-600/30 border border-purple-500/50 text-purple-200 text-xs font-semibold flex items-center gap-1.5 transition-all">
+                        <i data-lucide="sparkles" class="w-3.5 h-3.5"></i> Спросить ИИ-эксперта
+                    </button>
+                </div>
+
+                <div class="space-y-3 max-h-64 overflow-y-auto pr-1">
+                    ${p.replies.length ? p.replies.map((r, idx) => `
+                        <div class="p-4 rounded-2xl border ${r.isAI ? 'bg-purple-950/25 border-purple-500/40' : r.isTeacher ? 'bg-pink-950/20 border-pink-500/30' : 'bg-bg border-border'} space-y-2">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-2 text-xs">
+                                    <span class="font-bold text-white">${r.author}</span>
+                                    <span class="px-2 py-0.5 rounded-full text-[10px] font-semibold ${r.isAI ? 'bg-purple-500/30 text-purple-200' : r.isTeacher ? 'bg-pink-500/25 text-pink-200' : 'bg-card text-gray-400'}">${r.role}</span>
+                                </div>
+                                <button onclick="upvoteReply('${p.id}', ${idx})" class="text-xs text-gray-400 hover:text-purple-400 flex items-center gap-1">
+                                    <i data-lucide="thumbs-up" class="w-3.5 h-3.5"></i> ${r.likes}
+                                </button>
+                            </div>
+                            <div class="text-sm text-gray-200">${r.isAI ? formatAIText(r.text) : r.text}</div>
+                        </div>
+                    `).join("") : '<p class="text-xs text-gray-500">Пока нет ответов. Вы можете ответить первым или призвать ИИ-эксперта!</p>'}
+                </div>
+
+                <form onsubmit="addForumReply(event, '${p.id}')" class="flex gap-2 pt-2 border-t border-border">
+                    <input type="text" id="forum-reply-input" required placeholder="Написать ответ..." class="flex-1 px-4 py-2.5 rounded-xl bg-bg border border-border text-sm text-white focus:outline-none focus:border-purple-500">
+                    <button type="submit" class="px-5 py-2.5 rounded-xl brand-gradient text-white text-sm font-semibold">Ответить</button>
+                </form>
+            </div>`;
+            openModal(html);
+        }
+
+        function upvoteReply(postId, replyIndex) {
+            const p = state.forumPosts.find(x => x.id === postId);
+            if (!p) return;
+            p.replies[replyIndex].likes++;
+            saveState();
+            openForumThreadModal(postId);
+        }
+
+        function addForumReply(e, postId) {
+            e.preventDefault();
+            const input = document.getElementById("forum-reply-input");
+            const text = input.value.trim();
+            if (!text) return;
+            const p = state.forumPosts.find(x => x.id === postId);
+            const isTeacher = state.role === "teacher";
+            p.replies.push({
+                author: state.user.name,
+                role: isTeacher ? "Преподаватель" : "Ученик",
+                isTeacher,
+                likes: 1,
+                text
+            });
+            if (isTeacher) p.hasTeacherReply = true;
+            saveState();
+            openForumThreadModal(postId);
+            renderCurrentTab();
+            showToast("Ответ добавлен в обсуждение", "success");
+        }
+
+        async function askAIForumExpert(postId) {
+            const p = state.forumPosts.find(x => x.id === postId);
+            if (!p) return;
+            const btn = document.getElementById("btn-forum-ai");
+            btn.disabled = true;
+            btn.innerHTML = `<i data-lucide="loader-2" class="w-3.5 h-3.5 animate-spin"></i> ИИ думает...`;
+            lucide.createIcons();
+
+            try {
+                const prompt = `Пользователь задал на образовательном форуме вопрос:\nЗаголовок: ${p.title}\nТекст: ${p.body}\nДай точный, полезный и понятный ответ эксперта-преподавателя на русском языке (3–6 предложений или краткий список).`;
+                const answer = await callGeminiAPI(prompt, "Ты — ИИ-эксперт форума образовательной платформы УчНейро.");
+                p.replies.push({
+                    author: "УчНейро ИИ-Эксперт",
+                    role: "Нейросеть",
+                    isAI: true,
+                    isTeacher: false,
+                    likes: 1,
+                    text: answer
+                });
+                saveState();
+                openForumThreadModal(postId);
+                renderCurrentTab();
+                showToast("ИИ-эксперт ответил в ветке!", "success");
+            } catch (err) {
+                showToast("Ошибка при обращении к ИИ-эксперту", "error");
+                btn.disabled = false;
+                btn.innerHTML = `<i data-lucide="sparkles" class="w-3.5 h-3.5"></i> Спросить ИИ-эксперта`;
+                lucide.createIcons();
+            }
+        }
+
+        function openNewForumPostModal() {
+            const html = `
+            <form onsubmit="submitNewForumPost(event)" class="p-6 space-y-4">
+                <div class="flex items-center justify-between">
+                    <h2 class="text-xl font-display font-bold text-white">Начать новое обсуждение</h2>
+                    <button type="button" onclick="closeModal()" class="p-2 rounded-xl bg-bg border border-border text-gray-400 hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
+                </div>
+                <div class="space-y-3">
+                    <div>
+                        <label class="text-xs text-gray-400 block mb-1">Заголовок вопроса</label>
+                        <input type="text" id="fp-title" required placeholder="Например: Как запомнить все формулы по физике?" class="w-full px-4 py-2.5 rounded-xl bg-bg border border-border text-sm text-white focus:outline-none focus:border-purple-500">
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div>
+                            <label class="text-xs text-gray-400 block mb-1">Раздел</label>
+                            <select id="fp-cat" class="w-full px-4 py-2.5 rounded-xl bg-bg border border-border text-sm text-white focus:outline-none focus:border-purple-500">
+                                <option>Подготовка к ЕГЭ</option>
+                                <option>Программирование</option>
+                                <option>Технологии</option>
+                                <option>Науки</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="text-xs text-gray-400 block mb-1">Теги (через запятую)</label>
+                            <input type="text" id="fp-tags" value="Учёба, Вопрос" class="w-full px-4 py-2.5 rounded-xl bg-bg border border-border text-sm text-white focus:outline-none focus:border-purple-500">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="text-xs text-gray-400 block mb-1">Подробности</label>
+                        <textarea id="fp-body" rows="4" required placeholder="Опишите, что именно вызывает затруднение..." class="w-full px-4 py-2.5 rounded-xl bg-bg border border-border text-sm text-white focus:outline-none focus:border-purple-500"></textarea>
+                    </div>
+                </div>
+                <div class="flex justify-end gap-2 pt-2">
+                    <button type="button" onclick="closeModal()" class="px-4 py-2 rounded-xl bg-bg border border-border text-sm text-gray-300">Отмена</button>
+                    <button type="submit" class="px-5 py-2 rounded-xl brand-gradient text-white text-sm font-semibold">Создать тему</button>
+                </div>
+            </form>`;
+            openModal(html);
+        }
+
+        function submitNewForumPost(e) {
+            e.preventDefault();
+            const title = document.getElementById("fp-title").value.trim();
+            const category = document.getElementById("fp-cat").value;
+            const tags = document.getElementById("fp-tags").value.split(",").map(s => s.trim()).filter(Boolean);
+            const body = document.getElementById("fp-body").value.trim();
+
+            state.forumPosts.unshift({
+                id: "f_" + Date.now(),
+                title,
+                author: state.user.name,
+                category,
+                tags: tags.length ? tags : ["Обсуждение"],
+                solved: false,
+                hasTeacherReply: false,
+                likes: 1,
+                liked: true,
+                createdAt: "Только что",
+                body,
+                replies: []
+            });
+            saveState();
+            addActivity(`Создана тема на форуме «${title}»`, "messages-square");
+            closeModal();
+            renderCurrentTab();
+            showToast("Обсуждение опубликовано!", "success");
+        }
+
+        /* ==========================================================================
+           8. РАЗДЕЛ 5: РАСПИСАНИЕ И ПЛАНИРОВЩИК (С ИИ-АВТОПЛАНИРОВАНИЕМ)
+           ========================================================================== */
+        function renderSchedule() {
+            const days = ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс"];
+            const dayFull = { "Пн": "Понедельник", "Вт": "Вторник", "Ср": "Среда", "Чт": "Четверг", "Пт": "Пятница", "Сб": "Суббота", "Вс": "Воскресенье" };
+            const total = state.schedule.length;
+            const doneCount = state.schedule.filter(t => t.done).length;
+            const pct = total ? Math.round((doneCount / total) * 100) : 0;
+
+            return `
+            <div class="space-y-8 animate-fade-in">
+                <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+                    <div>
+                        <h1 class="text-3xl font-display font-extrabold text-white">Расписание и Планировщик</h1>
+                        <p class="text-sm text-gray-400">Личный учебный график на неделю с автоматическим планированием от нейросети</p>
+                    </div>
+                    <div class="flex flex-wrap gap-3">
+                        <button onclick="openAIPlannerModal()" class="px-5 py-2.5 rounded-xl brand-gradient brand-gradient-hover text-white text-sm font-semibold flex items-center gap-2 shadow-lg shadow-purple-600/25">
+                            <i data-lucide="sparkles" class="w-4 h-4"></i> Автопланирование с ИИ
+                        </button>
+                        <button onclick="openAddTaskModal()" class="px-4 py-2.5 rounded-xl bg-card border border-border hover:border-purple-500 text-white text-sm font-semibold flex items-center gap-2">
+                            <i data-lucide="plus" class="w-4 h-4"></i> Добавить задачу
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Прогресс недели -->
+                <div class="p-5 rounded-2xl bg-card border border-border flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div class="space-y-1">
+                        <div class="text-sm font-bold text-white">Прогресс выполнения на этой неделе</div>
+                        <div class="text-xs text-gray-400">Выполнено задач: <span class="text-purple-300 font-semibold">${doneCount} из ${total}</span></div>
+                    </div>
+                    <div class="flex items-center gap-3 w-full sm:w-72">
+                        <div class="flex-1 h-2.5 rounded-full bg-bg overflow-hidden">
+                            <div class="h-full rounded-full brand-gradient transition-all duration-500" style="width: ${pct}%"></div>
+                        </div>
+                        <span class="text-sm font-display font-bold text-purple-300 w-10 text-right">${pct}%</span>
+                    </div>
+                </div>
+
+                <!-- Недельный календарь (7 колонок на больших экранах, адаптивная сетка на мобильных) -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-7 gap-3">
+                    ${days.map(d => {
+                        const tasks = state.schedule.filter(t => t.day === d);
+                        return `
+                        <div class="rounded-2xl bg-card border border-border p-3.5 flex flex-col gap-3 min-h-[240px]">
+                            <div class="flex items-center justify-between pb-2 border-b border-border/70">
+                                <span class="font-display font-bold text-white text-sm" title="${dayFull[d]}">${dayFull[d]}</span>
+                                <span class="text-[11px] px-2 py-0.5 rounded-full bg-bg text-gray-400">${tasks.length}</span>
+                            </div>
+                            <div class="space-y-2.5 flex-1">
+                                ${tasks.length === 0 ? `<div class="text-xs text-gray-500 text-center py-6">Свободный день</div>` : tasks.map(t => `
+                                    <div class="p-3 rounded-xl border transition-all ${t.done ? 'bg-bg/50 border-emerald-500/30 opacity-70' : 'bg-bg border-border hover:border-purple-500/50'} space-y-2">
+                                        <div class="flex items-start justify-between gap-2">
+                                            <span class="text-[10px] font-semibold px-2 py-0.5 rounded bg-purple-500/15 text-purple-300">${t.subject}</span>
+                                            <button onclick="deleteTask('${t.id}')" class="text-gray-600 hover:text-rose-400" title="Удалить">
+                                                <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+                                            </button>
+                                        </div>
+                                        <div class="text-xs font-medium ${t.done ? 'line-through text-gray-400' : 'text-white'} leading-snug">${t.title}</div>
+                                        <div class="flex items-center justify-between pt-1">
+                                            <span class="text-[10px] text-gray-400 flex items-center gap-1"><i data-lucide="clock" class="w-3 h-3"></i> ${t.deadline}</span>
+                                            <label class="inline-flex items-center cursor-pointer">
+                                                <input type="checkbox" ${t.done ? "checked" : ""} onchange="toggleTaskDone('${t.id}')" class="w-4 h-4 rounded accent-purple-500 cursor-pointer">
+                                            </label>
+                                        </div>
+                                    </div>
+                                `).join("")}
+                            </div>
+                        </div>`;
+                    }).join("")}
+                </div>
+            </div>
+            `;
+        }
+
+        function toggleTaskDone(id) {
+            const t = state.schedule.find(x => x.id === id);
+            if (!t) return;
+            t.done = !t.done;
+            if (t.done) {
+                rewardProgress(1, 2, 0);
+                addActivity(`Выполнена задача «${t.title}» (${t.subject})`, "check-circle");
+                showToast("Задача выполнена! +2% к достижениям", "success");
+            }
+            saveState();
+            renderCurrentTab();
+        }
+
+        function deleteTask(id) {
+            state.schedule = state.schedule.filter(x => x.id !== id);
+            saveState();
+            renderCurrentTab();
+        }
+
+        function openAddTaskModal() {
+            const html = `
+            <form onsubmit="submitNewTask(event)" class="p-6 space-y-4">
+                <div class="flex items-center justify-between">
+                    <h2 class="text-xl font-display font-bold text-white">Добавить учебную задачу</h2>
+                    <button type="button" onclick="closeModal()" class="p-2 rounded-xl bg-bg border border-border text-gray-400 hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
+                </div>
+                <div class="space-y-3">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div>
+                            <label class="text-xs text-gray-400 block mb-1">Предмет</label>
+                            <input type="text" id="task-subj" required placeholder="Например: Информатика" class="w-full px-4 py-2.5 rounded-xl bg-bg border border-border text-sm text-white focus:outline-none focus:border-purple-500">
+                        </div>
+                        <div>
+                            <label class="text-xs text-gray-400 block mb-1">День недели</label>
+                            <select id="task-day" class="w-full px-4 py-2.5 rounded-xl bg-bg border border-border text-sm text-white focus:outline-none focus:border-purple-500">
+                                <option value="Пн">Понедельник</option>
+                                <option value="Вт">Вторник</option>
+                                <option value="Ср">Среда</option>
+                                <option value="Чт">Четверг</option>
+                                <option value="Пт">Пятница</option>
+                                <option value="Сб">Суббота</option>
+                                <option value="Вс">Воскресенье</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="text-xs text-gray-400 block mb-1">Название задачи</label>
+                        <input type="text" id="task-title" required placeholder="Например: Решить вариант ЕГЭ №5" class="w-full px-4 py-2.5 rounded-xl bg-bg border border-border text-sm text-white focus:outline-none focus:border-purple-500">
+                    </div>
+                    <div>
+                        <label class="text-xs text-gray-400 block mb-1">Дедлайн (время)</label>
+                        <input type="time" id="task-time" value="18:00" class="w-full px-4 py-2.5 rounded-xl bg-bg border border-border text-sm text-white focus:outline-none focus:border-purple-500">
+                    </div>
+                </div>
+                <div class="flex justify-end gap-2 pt-2">
+                    <button type="button" onclick="closeModal()" class="px-4 py-2 rounded-xl bg-bg border border-border text-sm text-gray-300">Отмена</button>
+                    <button type="submit" class="px-5 py-2 rounded-xl brand-gradient text-white text-sm font-semibold">Добавить</button>
+                </div>
+            </form>`;
+            openModal(html);
+        }
+
+        function submitNewTask(e) {
+            e.preventDefault();
+            state.schedule.push({
+                id: "t_" + Date.now(),
+                day: document.getElementById("task-day").value,
+                subject: document.getElementById("task-subj").value.trim(),
+                title: document.getElementById("task-title").value.trim(),
+                deadline: document.getElementById("task-time").value || "18:00",
+                done: false
+            });
+            saveState();
+            closeModal();
+            renderCurrentTab();
+            showToast("Задача добавлена в расписание!", "success");
+        }
+
+        function openAIPlannerModal() {
+            const html = `
+            <div class="p-6 space-y-4">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-2">
+                        <i data-lucide="sparkles" class="w-5 h-5 text-purple-400"></i>
+                        <h2 class="text-xl font-display font-bold text-white">Автопланирование с ИИ</h2>
+                    </div>
+                    <button onclick="closeModal()" class="p-2 rounded-xl bg-bg border border-border text-gray-400 hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
+                </div>
+                <p class="text-sm text-gray-400">Опишите вашу учебную цель, и нейросеть УчНейро составит оптимальный график на неделю и добавит задачи в расписание.</p>
+                <div class="space-y-3">
+                    <input type="text" id="ai-plan-goal" value="Подготовиться к ЕГЭ по информатике за неделю" placeholder="Например: Освоить основы Python за 7 дней" class="w-full px-4 py-3 rounded-xl bg-bg border border-border text-sm text-white focus:outline-none focus:border-purple-500">
+                    <div class="flex flex-wrap gap-2">
+                        <button type="button" onclick="document.getElementById('ai-plan-goal').value='Подготовиться к ЕГЭ по математике (профиль) за неделю'" class="text-xs px-3 py-1 rounded-full bg-bg border border-border text-gray-300 hover:border-purple-500">ЕГЭ по математике</button>
+                        <button type="button" onclick="document.getElementById('ai-plan-goal').value='Выучить базовый Python за 7 дней'" class="text-xs px-3 py-1 rounded-full bg-bg border border-border text-gray-300 hover:border-purple-500">Python за 7 дней</button>
+                        <button type="button" onclick="document.getElementById('ai-plan-goal').value='Подготовиться к контрольной по физике и химии'" class="text-xs px-3 py-1 rounded-full bg-bg border border-border text-gray-300 hover:border-purple-500">Физика и Химия</button>
+                    </div>
+                </div>
+                <div id="ai-plan-status"></div>
+                <div class="flex justify-end gap-2 pt-2">
+                    <button onclick="closeModal()" class="px-4 py-2 rounded-xl bg-bg border border-border text-sm text-gray-300">Отмена</button>
+                    <button id="btn-run-ai-plan" onclick="runAIAutoPlan()" class="px-5 py-2.5 rounded-xl brand-gradient text-white text-sm font-semibold flex items-center gap-2">
+                        <i data-lucide="wand-2" class="w-4 h-4"></i> Сформировать график
+                    </button>
+                </div>
+            </div>`;
+            openModal(html);
+        }
+
+        async function runAIAutoPlan() {
+            const goal = document.getElementById("ai-plan-goal").value.trim();
+            if (!goal) return;
+            const btn = document.getElementById("btn-run-ai-plan");
+            const status = document.getElementById("ai-plan-status");
+            btn.disabled = true;
+            btn.innerHTML = `<i data-lucide="loader-2" class="w-4 h-4 animate-spin"></i> Составляем план...`;
+            status.innerHTML = `<p class="text-xs text-purple-300">Нейросеть распределяет нагрузку по дням недели...</p>`;
+            lucide.createIcons();
+
+            const schema = {
+                type: "ARRAY",
+                items: {
+                    type: "OBJECT",
+                    properties: {
+                        day: { type: "STRING", description: "Один из: Пн, Вт, Ср, Чт, Пт, Сб, Вс" },
+                        subject: { type: "STRING" },
+                        title: { type: "STRING" },
+                        deadline: { type: "STRING", description: "Время в формате ЧЧ:ММ" }
+                    },
+                    required: ["day", "subject", "title", "deadline"]
+                }
+            };
+
+            try {
+                const prompt = `Составь оптимальный учебный план из 5–7 конкретных задач на неделю (дни строго из списка: Пн, Вт, Ср, Чт, Пт, Сб, Вс) для цели: "${goal}". Краткие понятные названия задач на русском.`;
+                const raw = await callGeminiAPI(prompt, "Ты — планировщик УчНейро. Отвечай строго в формате JSON.", schema);
+                const plan = JSON.parse(raw);
+                const validDays = ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс"];
+
+                let added = 0;
+                plan.forEach((item, i) => {
+                    const day = validDays.includes(item.day) ? item.day : validDays[i % 7];
+                    state.schedule.push({
+                        id: "ai_t_" + Date.now() + "_" + i,
+                        day,
+                        subject: item.subject || "Учёба",
+                        title: item.title,
+                        deadline: item.deadline || "18:00",
+                        done: false
+                    });
+                    added++;
+                });
+
+                saveState();
+                addActivity(`ИИ-планировщик добавил ${added} задач по цели «${goal}»`, "calendar");
+                closeModal();
+                renderCurrentTab();
+                showToast(`Готово! Добавлено ${added} задач в расписание`, "success");
+            } catch (err) {
+                status.innerHTML = `<p class="text-xs text-rose-400">Ошибка генерации графика. Попробуйте ещё раз.</p>`;
+                btn.disabled = false;
+                btn.innerHTML = `<i data-lucide="wand-2" class="w-4 h-4"></i> Попробовать снова`;
+                lucide.createIcons();
+            }
+        }
+
+        /* ==========================================================================
+           9. РАЗДЕЛ 6: НЕЙРО-ПОМОЩНИК И ГЕНЕРАТОР ИИ-ТЕСТОВ
+           ========================================================================== */
+        function renderAIHub() {
+            return `
+            <div class="space-y-6 animate-fade-in">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div>
+                        <h1 class="text-3xl font-display font-extrabold text-white flex items-center gap-2.5">
+                            <span class="brand-text-gradient">УчНейро ИИ</span>
+                            <i data-lucide="sparkles" class="w-7 h-7 text-purple-400"></i>
+                        </h1>
+                        <p class="text-sm text-gray-400">Персональный ИИ-наставник, генератор конспектов и интерактивных тестов</p>
+                    </div>
+                    <!-- Подвкладки -->
+                    <div class="flex bg-card p-1 rounded-2xl border border-border w-fit">
+                        <button onclick="state.aiSubTab='chat'; renderCurrentTab()" class="px-4 py-2 rounded-xl text-sm font-semibold transition-all flex items-center gap-1.5 ${state.aiSubTab === 'chat' ? 'brand-gradient text-white shadow' : 'text-gray-400 hover:text-white'}">
+                            <i data-lucide="message-square-text" class="w-4 h-4"></i> Чат с ИИ
+                        </button>
+                        <button onclick="state.aiSubTab='quiz'; renderCurrentTab()" class="px-4 py-2 rounded-xl text-sm font-semibold transition-all flex items-center gap-1.5 ${state.aiSubTab === 'quiz' ? 'brand-gradient text-white shadow' : 'text-gray-400 hover:text-white'}">
+                            <i data-lucide="brain-circuit" class="w-4 h-4"></i> Генератор тестов
+                        </button>
+                    </div>
+                </div>
+
+                ${state.aiSubTab === "chat" ? renderAIChat() : renderAIQuiz()}
+            </div>
+            `;
+        }
+
+        function renderAIChat() {
+            const quickPrompts = [
+                "Объясни логарифмы простыми словами",
+                "Составь конспект по законам Ньютона",
+                "Помоги написать цикл for на Python",
+                "Как подготовиться к ЕГЭ по русскому за месяц?"
+            ];
+
+            return `
+            <div class="rounded-3xl bg-card border border-border overflow-hidden flex flex-col h-[620px]">
+                <!-- Заголовок чата -->
+                <div class="px-5 py-3.5 border-b border-border flex items-center justify-between bg-[#16161C]">
+                    <div class="flex items-center gap-3">
+                        <div class="w-9 h-9 rounded-xl brand-gradient flex items-center justify-center text-white">
+                            <i data-lucide="bot" class="w-5 h-5"></i>
+                        </div>
+                        <div>
+                            <div class="text-sm font-bold text-white">УчНейро Ассистент</div>
+                            <div class="text-[11px] text-emerald-400 flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> Готов помочь 24/7</div>
+                        </div>
+                    </div>
+                    <button onclick="clearAIChat()" class="text-xs text-gray-400 hover:text-white px-3 py-1.5 rounded-lg bg-bg border border-border">Очистить чат</button>
+                </div>
+
+                <!-- Сообщения -->
+                <div id="ai-chat-messages" class="flex-1 overflow-y-auto p-5 space-y-4">
+                    ${state.aiChat.map(m => `
+                        <div class="flex ${m.role === 'user' ? 'justify-end' : 'justify-start'}">
+                            <div class="max-w-[85%] sm:max-w-[75%] rounded-2xl px-4 py-3 ${m.role === 'user' ? 'brand-gradient text-white rounded-br-sm' : 'bg-bg border border-border text-gray-200 rounded-bl-sm'}">
+                                ${m.role === 'user' ? `<p class="text-sm">${m.text}</p>` : formatAIText(m.text)}
+                            </div>
+                        </div>
+                    `).join("")}
+                </div>
+
+                <!-- Быстрые подсказки -->
+                <div class="px-5 py-2 border-t border-border/60 flex items-center gap-2 overflow-x-auto bg-[#16161C]/60">
+                    ${quickPrompts.map(q => `
+                        <button onclick="document.getElementById('ai-chat-input').value='${q}'; sendAIChatMessage()" class="text-xs px-3 py-1.5 rounded-full bg-bg border border-border hover:border-purple-500 text-gray-300 whitespace-nowrap transition-colors">
+                            ${q}
+                        </button>
+                    `).join("")}
+                </div>
+
+                <!-- Поле ввода -->
+                <form onsubmit="event.preventDefault(); sendAIChatMessage()" class="p-4 border-t border-border bg-[#16161C] flex gap-2.5">
+                    <input type="text" id="ai-chat-input" placeholder="Задайте любой учебный вопрос..." class="flex-1 px-4 py-3 rounded-xl bg-bg border border-border text-sm text-white placeholder-gray-500 focus:outline-none focus:border-purple-500">
+                    <button type="submit" id="ai-chat-send-btn" class="px-5 py-3 rounded-xl brand-gradient brand-gradient-hover text-white font-semibold text-sm flex items-center gap-2">
+                        <span class="hidden sm:inline">Отправить</span>
+                        <i data-lucide="send" class="w-4 h-4"></i>
+                    </button>
+                </form>
+            </div>
+            `;
+        }
+
+        function clearAIChat() {
+            state.aiChat = [DEFAULT_STATE.aiChat[0]];
+            saveState();
+            renderCurrentTab();
+        }
+
+        async function sendAIChatMessage() {
+            const input = document.getElementById("ai-chat-input");
+            const btn = document.getElementById("ai-chat-send-btn");
+            const text = input?.value.trim();
+            if (!text) return;
+
+            input.value = "";
+            state.aiChat.push({ role: "user", text });
+            saveState();
+            renderCurrentTab();
+
+            const chatBox = document.getElementById("ai-chat-messages");
+            const loader = document.createElement("div");
+            loader.className = "flex justify-start";
+            loader.innerHTML = `<div class="rounded-2xl px-4 py-3 bg-bg border border-border flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-purple-400 typing-dot"></span><span class="w-2 h-2 rounded-full bg-purple-400 typing-dot"></span><span class="w-2 h-2 rounded-full bg-purple-400 typing-dot"></span></div>`;
+            chatBox.appendChild(loader);
+            chatBox.scrollTop = chatBox.scrollHeight;
+
+            if (btn) btn.disabled = true;
+
+            try {
+                const contextText = state.aiChat.slice(-6).map(m => `${m.role === 'user' ? 'Ученик' : 'УчНейро ИИ'}: ${m.text}`).join("\n");
+                const reply = await callGeminiAPI(contextText, "Ты — УчНейро ИИ, дружелюбный и умный образовательный помощник для школьников и студентов. Объясняй понятно, структурированно, с примерами на русском языке.");
+                state.aiChat.push({ role: "model", text: reply });
+                saveState();
+                renderCurrentTab();
+            } catch (err) {
+                state.aiChat.push({ role: "model", text: "Извини, сейчас не удалось получить ответ от сервера. Попробуй отправить вопрос ещё раз." });
+                saveState();
+                renderCurrentTab();
+            }
+        }
+
+        /* --- ГЕНЕРАТОР ИИ-ТЕСТОВ --- */
+        function renderAIQuiz() {
+            const subjects = ["Информатика", "Математика", "Физика", "История", "Химия", "Биология", "Литература", "Обществознание"];
+
+            return `
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                <!-- Панель настройки теста -->
+                <div class="lg:col-span-4 rounded-3xl bg-card border border-border p-6 space-y-4 h-fit">
+                    <h2 class="text-lg font-display font-bold text-white flex items-center gap-2">
+                        <i data-lucide="sliders" class="w-5 h-5 text-purple-400"></i> Параметры теста
+                    </h2>
+                    <div class="space-y-3">
+                        <div>
+                            <label class="text-xs text-gray-400 block mb-1">Предмет</label>
+                            <select id="quiz-subject" onchange="activeQuiz.subject=this.value" class="w-full px-4 py-2.5 rounded-xl bg-bg border border-border text-sm text-white focus:outline-none focus:border-purple-500">
+                                ${subjects.map(s => `<option value="${s}" ${activeQuiz.subject === s ? "selected" : ""}>${s}</option>`).join("")}
+                            </select>
+                        </div>
+                        <div>
+                            <label class="text-xs text-gray-400 block mb-1">Тема теста</label>
+                            <input type="text" id="quiz-topic" value="${activeQuiz.topic || 'Основы Python и циклы'}" oninput="activeQuiz.topic=this.value" placeholder="Например: Логарифмы, Вторая мировая..." class="w-full px-4 py-2.5 rounded-xl bg-bg border border-border text-sm text-white focus:outline-none focus:border-purple-500">
+                        </div>
+                        <div>
+                            <label class="text-xs text-gray-400 block mb-1">Количество вопросов</label>
+                            <select id="quiz-count" class="w-full px-4 py-2.5 rounded-xl bg-bg border border-border text-sm text-white focus:outline-none focus:border-purple-500">
+                                <option value="3">3 вопроса (быстрый)</option>
+                                <option value="4" selected>4 вопроса (стандарт)</option>
+                                <option value="5">5 вопросов (подробный)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button onclick="generateAIQuiz()" ${activeQuiz.loading ? "disabled" : ""} class="w-full py-3 rounded-xl brand-gradient brand-gradient-hover text-white font-semibold text-sm flex items-center justify-center gap-2 shadow-lg shadow-purple-600/20">
+                        ${activeQuiz.loading ? `<i data-lucide="loader-2" class="w-4 h-4 animate-spin"></i> Генерация теста...` : `<i data-lucide="sparkles" class="w-4 h-4"></i> Сгенерировать ИИ-тест`}
+                    </button>
+                </div>
+
+                <!-- Область прохождения теста -->
+                <div class="lg:col-span-8 rounded-3xl bg-card border border-border p-6 min-h-[380px] flex flex-col justify-center">
+                    ${activeQuiz.loading ? `
+                        <div class="text-center space-y-3 py-12">
+                            <i data-lucide="brain-circuit" class="w-12 h-12 text-purple-400 mx-auto animate-pulse"></i>
+                            <div class="text-lg font-display font-bold text-white">Нейросеть создаёт вопросы...</div>
+                            <p class="text-sm text-gray-400">Подбираем задания и объяснения по теме «${activeQuiz.topic}»</p>
+                        </div>
+                    ` : activeQuiz.questions.length === 0 ? `
+                        <div class="text-center space-y-3 py-12 max-w-md mx-auto">
+                            <div class="w-14 h-14 rounded-2xl bg-purple-500/15 text-purple-400 flex items-center justify-center mx-auto">
+                                <i data-lucide="clipboard-check" class="w-7 h-7"></i>
+                            </div>
+                            <h3 class="text-xl font-display font-bold text-white">Проверь свои знания с ИИ</h3>
+                            <p class="text-sm text-gray-400">Выбери любой предмет и тему слева — нейросеть создаст уникальный тест, проверит ответы и подробно разберёт ошибки.</p>
+                        </div>
+                    ` : activeQuiz.finished ? renderQuizResults() : renderQuizQuestion()}
+                </div>
+            </div>
+            `;
+        }
+
+        function renderQuizQuestion() {
+            const q = activeQuiz.questions[activeQuiz.currentIndex];
+            const total = activeQuiz.questions.length;
+            const pct = Math.round(((activeQuiz.currentIndex + 1) / total) * 100);
+            const selected = activeQuiz.answers[activeQuiz.currentIndex];
+
+            return `
+            <div class="space-y-6 w-full">
+                <div class="space-y-2">
+                    <div class="flex items-center justify-between text-xs text-gray-400">
+                        <span>Вопрос ${activeQuiz.currentIndex + 1} из ${total}</span>
+                        <span class="text-purple-300 font-semibold">${activeQuiz.subject}</span>
+                    </div>
+                    <div class="w-full h-2 rounded-full bg-bg overflow-hidden">
+                        <div class="h-full rounded-full brand-gradient transition-all" style="width: ${pct}%"></div>
+                    </div>
+                </div>
+
+                <h3 class="text-lg sm:text-xl font-display font-bold text-white">${q.question}</h3>
+
+                <div class="space-y-2.5">
+                    ${q.options.map((opt, idx) => `
+                        <button onclick="selectQuizOption(${idx})" class="w-full text-left p-4 rounded-2xl border transition-all flex items-center gap-3 ${selected === idx ? 'bg-purple-600/20 border-purple-500 text-white' : 'bg-bg border-border text-gray-300 hover:border-purple-500/50'}">
+                            <span class="w-7 h-7 rounded-lg flex items-center justify-center text-xs font-bold shrink-0 ${selected === idx ? 'brand-gradient text-white' : 'bg-card text-gray-400'}">${String.fromCharCode(65 + idx)}</span>
+                            <span class="text-sm">${opt}</span>
+                        </button>
+                    `).join("")}
+                </div>
+
+                <div class="flex items-center justify-between pt-4 border-t border-border">
+                    <button onclick="activeQuiz.currentIndex = Math.max(0, activeQuiz.currentIndex - 1); renderCurrentTab()" ${activeQuiz.currentIndex === 0 ? "disabled class='opacity-40 px-4 py-2 rounded-xl bg-bg border border-border text-sm text-gray-400'" : "class='px-4 py-2 rounded-xl bg-bg border border-border text-sm text-gray-200 hover:border-purple-500'"}>Назад</button>
+                    ${activeQuiz.currentIndex === total - 1 ? `
+                        <button onclick="finishAIQuiz()" ${selected === undefined ? "disabled" : ""} class="px-6 py-2.5 rounded-xl brand-gradient text-white text-sm font-semibold disabled:opacity-40">Завершить и проверить</button>
+                    ` : `
+                        <button onclick="activeQuiz.currentIndex++; renderCurrentTab()" ${selected === undefined ? "disabled" : ""} class="px-6 py-2.5 rounded-xl brand-gradient text-white text-sm font-semibold disabled:opacity-40">Далее</button>
+                    `}
+                </div>
+            </div>`;
+        }
+
+        function renderQuizResults() {
+            const total = activeQuiz.questions.length;
+            let score = 0;
+            activeQuiz.questions.forEach((q, i) => {
+                if (activeQuiz.answers[i] === q.correctIndex) score++;
+            });
+            const pct = Math.round((score / total) * 100);
+
+            return `
+            <div class="space-y-5 w-full">
+                <div class="p-5 rounded-2xl bg-bg border border-purple-500/40 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div>
+                        <div class="text-xs font-semibold uppercase tracking-wider text-purple-400">Результат теста</div>
+                        <h3 class="text-2xl font-display font-extrabold text-white mt-1">Верно ${score} из ${total} (${pct}%)</h3>
+                        <p class="text-xs text-gray-400 mt-1">${pct >= 75 ? 'Отличный результат! Тема усвоена.' : 'Хорошая попытка! Изучите разбор ошибок ниже.'}</p>
+                    </div>
+                    <button onclick="generateAIQuiz()" class="px-4 py-2.5 rounded-xl brand-gradient text-white text-sm font-semibold shrink-0">Пройти новый тест</button>
+                </div>
+
+                <div class="space-y-3 max-h-80 overflow-y-auto pr-1">
+                    ${activeQuiz.questions.map((q, i) => {
+                        const isRight = activeQuiz.answers[i] === q.correctIndex;
+                        return `
+                        <div class="p-4 rounded-2xl border ${isRight ? 'bg-emerald-950/20 border-emerald-500/30' : 'bg-rose-950/20 border-rose-500/30'} space-y-1.5">
+                            <div class="flex items-start justify-between gap-2">
+                                <span class="text-sm font-bold text-white">${i + 1}. ${q.question}</span>
+                                <span class="text-xs font-bold shrink-0 ${isRight ? 'text-emerald-400' : 'text-rose-400'}">${isRight ? '✓ Верно' : '✗ Ошибка'}</span>
+                            </div>
+                            <div class="text-xs text-gray-300">Ваш ответ: <span class="font-semibold">${q.options[activeQuiz.answers[i]] ?? "—"}</span></div>
+                            ${!isRight ? `<div class="text-xs text-emerald-300">Правильный ответ: <span class="font-semibold">${q.options[q.correctIndex]}</span></div>` : ""}
+                            <div class="text-xs text-gray-400 pt-1">💡 ${q.explanation}</div>
+                        </div>`;
+                    }).join("")}
+                </div>
+            </div>`;
+        }
+
+        function selectQuizOption(idx) {
+            activeQuiz.answers[activeQuiz.currentIndex] = idx;
+            renderCurrentTab();
+        }
+
+        function finishAIQuiz() {
+            activeQuiz.finished = true;
+            let score = 0;
+            activeQuiz.questions.forEach((q, i) => { if (activeQuiz.answers[i] === q.correctIndex) score++; });
+            rewardProgress(1, 6, score === activeQuiz.questions.length ? 1 : 0);
+            addActivity(`Пройден ИИ-тест «${activeQuiz.topic}» (${score}/${activeQuiz.questions.length})`, "brain-circuit");
+            showToast("Тест завершён! Прогресс в профиле обновлён", "success");
+            renderCurrentTab();
+        }
+
+        async function generateAIQuiz() {
+            const subjEl = document.getElementById("quiz-subject");
+            const topicEl = document.getElementById("quiz-topic");
+            const countEl = document.getElementById("quiz-count");
+
+            const subject = subjEl ? subjEl.value : activeQuiz.subject;
+            const topic = (topicEl ? topicEl.value : activeQuiz.topic).trim() || "Общие знания";
+            const count = countEl ? parseInt(countEl.value, 10) : 4;
+
+            activeQuiz = { loading: true, subject, topic, questions: [], currentIndex: 0, answers: [], finished: false };
+            renderCurrentTab();
+
+            const schema = {
+                type: "ARRAY",
+                items: {
+                    type: "OBJECT",
+                    properties: {
+                        question: { type: "STRING" },
+                        options: { type: "ARRAY", items: { type: "STRING" } },
+                        correctIndex: { type: "INTEGER", description: "Индекс правильного ответа (0-3)" },
+                        explanation: { type: "STRING", description: "Краткое объяснение правильного ответа" }
+                    },
+                    required: ["question", "options", "correctIndex", "explanation"]
+                }
+            };
+
+            try {
+                const prompt = `Создай образовательный тест из ${count} вопросов с 4 вариантами ответа по предмету "${subject}" на тему "${topic}". Укажи индекс правильного ответа (от 0 до 3) и краткое объяснение на русском языке.`;
+                const raw = await callGeminiAPI(prompt, "Ты — генератор тестов платформы УчНейро. Отвечай строго в JSON.", schema);
+                const parsed = JSON.parse(raw);
+                activeQuiz.questions = parsed;
+                activeQuiz.loading = false;
+                renderCurrentTab();
+            } catch (err) {
+                activeQuiz.loading = false;
+                renderCurrentTab();
+                showToast("Не удалось сгенерировать тест. Попробуйте ещё раз.", "error");
+            }
+        }
+
+        /* ==========================================================================
+           10. РАЗДЕЛ 7: ПРОФИЛЬ УЧЕНИКА И КАБИНЕТ ПРЕПОДАВАТЕЛЯ
+           ========================================================================== */
+        function renderProfile() {
+            return state.role === "teacher" ? renderTeacherDashboard() : renderStudentProfile();
+        }
+
+        function renderStudentProfile() {
+            const u = state.user;
+            const initials = u.name.split(" ").map(w => w[0]).join("").slice(0, 2).toUpperCase() || "ФВ";
+
+            return `
+            <div class="max-w-3xl mx-auto space-y-6 animate-fade-in">
+                <!-- Верхняя карточка профиля (по макету) -->
+                <div class="rounded-3xl bg-card border border-border p-6 sm:p-8 text-center relative">
+                    <button onclick="openEditProfileModal()" class="absolute top-5 right-5 w-10 h-10 rounded-full bg-white text-[#121216] flex items-center justify-center hover:scale-105 transition-transform shadow" title="Настройки профиля">
+                        <i data-lucide="sliders-horizontal" class="w-4 h-4"></i>
+                    </button>
+
+                    <div class="w-24 h-24 mx-auto rounded-full brand-gradient p-1 shadow-xl shadow-purple-600/25">
+                        <div class="w-full h-full rounded-full bg-[#1E1E26] flex items-center justify-center text-2xl font-display font-extrabold text-white">
+                            ${initials}
+                        </div>
+                    </div>
+
+                    <h1 class="text-2xl sm:text-3xl font-display font-extrabold text-white mt-4">${u.name}</h1>
+                    <div class="flex items-center justify-center gap-1.5 text-sm text-gray-400 mt-1">
+                        <i data-lucide="map-pin" class="w-4 h-4 text-purple-400"></i> ${u.city}
+                    </div>
+                    <p class="text-xs text-purple-300 mt-2 bg-purple-500/10 border border-purple-500/20 inline-block px-3 py-1 rounded-full">${u.status}</p>
+
+                    <!-- Блок Мои курсы / Подписки / Друзья -->
+                    <div class="mt-6 max-w-md mx-auto rounded-2xl bg-[#252530] border border-border p-4 grid grid-cols-3 divide-x divide-border">
+                        <button onclick="navigateTo('articles')" class="px-2 hover:text-purple-300 transition-colors">
+                            <div class="font-display font-bold text-white text-base">Статьи</div>
+                            <div class="text-[11px] text-gray-400 mt-0.5">Мои курсы</div>
+                        </button>
+                        <div class="px-2">
+                            <div class="font-display font-bold text-white text-base">${u.subscriptions}</div>
+                            <div class="text-[11px] text-gray-400 mt-0.5">Подписки</div>
+                        </div>
+                        <button onclick="navigateTo('forum')" class="px-2 hover:text-purple-300 transition-colors">
+                            <div class="font-display font-bold text-white text-base">Форум</div>
+                            <div class="text-[11px] text-gray-400 mt-0.5">Друзья (${u.friends})</div>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Общий обзор прогресса (с фиолетовыми пилюлями как на макете) -->
+                <div class="space-y-3">
+                    <h2 class="text-lg font-display font-bold text-white px-1">Общий обзор прогресса</h2>
+
+                    <div class="p-4 sm:p-5 rounded-2xl bg-card border border-border flex items-center justify-between gap-4">
+                        <div class="flex items-center gap-3 text-sm sm:text-base font-medium text-gray-200">
+                            <i data-lucide="check" class="w-5 h-5 text-purple-400"></i>
+                            Пройденные курсы
+                        </div>
+                        <span class="px-4 py-1.5 rounded-full brand-gradient text-white font-bold text-sm shadow-md shadow-purple-600/20">${u.completedCourses} шт</span>
+                    </div>
+
+                    <div class="p-4 sm:p-5 rounded-2xl bg-card border border-border flex items-center justify-between gap-4">
+                        <div class="flex items-center gap-3 text-sm sm:text-base font-medium text-gray-200">
+                            <i data-lucide="hourglass" class="w-5 h-5 text-purple-400"></i>
+                            Общее количество учебных часов
+                        </div>
+                        <span class="px-4 py-1.5 rounded-full brand-gradient text-white font-bold text-sm shadow-md shadow-purple-600/20">${u.studyHours} часов</span>
+                    </div>
+
+                    <div class="p-4 sm:p-5 rounded-2xl bg-card border border-border flex items-center justify-between gap-4">
+                        <div class="flex items-center gap-3 text-sm sm:text-base font-medium text-gray-200">
+                            <i data-lucide="trophy" class="w-5 h-5 text-purple-400"></i>
+                            Достижения
+                        </div>
+                        <span class="px-4 py-1.5 rounded-full brand-gradient text-white font-bold text-sm shadow-md shadow-purple-600/20">Разблокировано ${u.achievementsPercent}%</span>
+                    </div>
+                </div>
+
+                <!-- История активности -->
+                <div class="rounded-3xl bg-card border border-border p-6 space-y-4">
+                    <div class="flex items-center justify-between">
+                        <h2 class="text-lg font-display font-bold text-white">История активности</h2>
+                        <button onclick="resetDemoData()" class="text-xs text-gray-500 hover:text-rose-400 transition-colors">Сбросить демо-данные</button>
+                    </div>
+                    <div class="space-y-3">
+                        ${u.activity.map(act => `
+                            <div class="flex items-center justify-between gap-3 p-3 rounded-xl bg-bg border border-border/70">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-8 h-8 rounded-lg bg-purple-500/15 text-purple-400 flex items-center justify-center shrink-0">
+                                        <i data-lucide="${act.icon || 'sparkles'}" class="w-4 h-4"></i>
+                                    </div>
+                                    <span class="text-sm text-gray-200">${act.text}</span>
+                                </div>
+                                <span class="text-xs text-gray-500 shrink-0">${act.time}</span>
+                            </div>
+                        `).join("")}
+                    </div>
+                </div>
+            </div>
+            `;
+        }
+
+        function openEditProfileModal() {
+            const html = `
+            <form onsubmit="saveProfileEdits(event)" class="p-6 space-y-4">
+                <div class="flex items-center justify-between">
+                    <h2 class="text-xl font-display font-bold text-white">Редактировать профиль</h2>
+                    <button type="button" onclick="closeModal()" class="p-2 rounded-xl bg-bg border border-border text-gray-400 hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
+                </div>
+                <div class="space-y-3">
+                    <div>
+                        <label class="text-xs text-gray-400 block mb-1">Имя и фамилия</label>
+                        <input type="text" id="edit-name" required value="${state.user.name}" class="w-full px-4 py-2.5 rounded-xl bg-bg border border-border text-sm text-white focus:outline-none focus:border-purple-500">
+                    </div>
+                    <div>
+                        <label class="text-xs text-gray-400 block mb-1">Город</label>
+                        <input type="text" id="edit-city" required value="${state.user.city}" class="w-full px-4 py-2.5 rounded-xl bg-bg border border-border text-sm text-white focus:outline-none focus:border-purple-500">
+                    </div>
+                    <div>
+                        <label class="text-xs text-gray-400 block mb-1">Статус</label>
+                        <input type="text" id="edit-status" value="${state.user.status}" class="w-full px-4 py-2.5 rounded-xl bg-bg border border-border text-sm text-white focus:outline-none focus:border-purple-500">
+                    </div>
+                </div>
+                <div class="flex justify-end gap-2 pt-2">
+                    <button type="button" onclick="closeModal()" class="px-4 py-2 rounded-xl bg-bg border border-border text-sm text-gray-300">Отмена</button>
+                    <button type="submit" class="px-5 py-2 rounded-xl brand-gradient text-white text-sm font-semibold">Сохранить</button>
+                </div>
+            </form>`;
+            openModal(html);
+        }
+
+        function saveProfileEdits(e) {
+            e.preventDefault();
+            state.user.name = document.getElementById("edit-name").value.trim();
+            state.user.city = document.getElementById("edit-city").value.trim();
+            state.user.status = document.getElementById("edit-status").value.trim();
+            saveState();
+            updateRoleUI();
+            closeModal();
+            renderCurrentTab();
+            showToast("Профиль обновлён!", "success");
+        }
+
+        /* --- КАБИНЕТ ПРЕПОДАВАТЕЛЯ --- */
+        function renderTeacherDashboard() {
+            const ts = state.teacherStats;
+            return `
+            <div class="space-y-8 animate-fade-in">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div>
+                        <span class="px-3 py-1 rounded-full text-xs font-semibold bg-pink-500/15 text-pink-300 border border-pink-500/30">Режим преподавателя</span>
+                        <h1 class="text-3xl font-display font-extrabold text-white mt-2">Кабинет преподавателя</h1>
+                        <p class="text-sm text-gray-400">Создавайте курсы, проверяйте задания с помощью ИИ и отслеживайте монетизацию</p>
+                    </div>
+                    <button onclick="setRole('student')" class="px-4 py-2.5 rounded-xl bg-card border border-border hover:border-purple-500 text-sm text-gray-200">
+                        Переключиться на Ученика
+                    </button>
+                </div>
+
+                <!-- Статистика и монетизация -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <div class="p-5 rounded-2xl bg-card border border-border space-y-1">
+                        <div class="flex items-center justify-between text-gray-400 text-xs">
+                            <span>Просмотры уроков</span>
+                            <i data-lucide="eye" class="w-4 h-4 text-purple-400"></i>
+                        </div>
+                        <div class="text-2xl font-display font-extrabold text-white">${ts.views.toLocaleString("ru-RU")}</div>
+                        <div class="text-[11px] text-emerald-400">+18% за месяц</div>
+                    </div>
+                    <div class="p-5 rounded-2xl bg-card border border-border space-y-1">
+                        <div class="flex items-center justify-between text-gray-400 text-xs">
+                            <span>Доход от контента</span>
+                            <i data-lucide="wallet" class="w-4 h-4 text-pink-400"></i>
+                        </div>
+                        <div class="text-2xl font-display font-extrabold text-white">${ts.income.toLocaleString("ru-RU")} ₽</div>
+                        <div class="text-[11px] text-emerald-400">Доступно к выводу</div>
+                    </div>
+                    <div class="p-5 rounded-2xl bg-card border border-border space-y-1">
+                        <div class="flex items-center justify-between text-gray-400 text-xs">
+                            <span>Рейтинг преподавателя</span>
+                            <i data-lucide="star" class="w-4 h-4 text-amber-400 fill-amber-400"></i>
+                        </div>
+                        <div class="text-2xl font-display font-extrabold text-white">${ts.rating} / 5.0</div>
+                        <div class="text-[11px] text-gray-400">На основе 124 отзывов</div>
+                    </div>
+                    <div class="p-5 rounded-2xl bg-card border border-border space-y-1">
+                        <div class="flex items-center justify-between text-gray-400 text-xs">
+                            <span>Активных учеников</span>
+                            <i data-lucide="users" class="w-4 h-4 text-blue-400"></i>
+                        </div>
+                        <div class="text-2xl font-display font-extrabold text-white">${ts.students}</div>
+                        <div class="text-[11px] text-purple-300">На ваших курсах</div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <!-- Инструмент: ИИ-проверка заданий -->
+                    <div class="rounded-3xl bg-card border border-border p-6 space-y-4">
+                        <div class="flex items-center gap-2.5">
+                            <div class="w-10 h-10 rounded-xl brand-gradient flex items-center justify-center text-white">
+                                <i data-lucide="sparkles" class="w-5 h-5"></i>
+                            </div>
+                            <div>
+                                <h2 class="text-lg font-display font-bold text-white">ИИ-проверка заданий</h2>
+                                <p class="text-xs text-gray-400">Автоматическая оценка и развёрнутая обратная связь ученику</p>
+                            </div>
+                        </div>
+
+                        <div class="space-y-3">
+                            <div>
+                                <label class="text-xs text-gray-400 block mb-1">Условие задания</label>
+                                <input type="text" id="grader-prompt" value="Объясните принцип работы цикла while в Python и приведите пример." class="w-full px-4 py-2.5 rounded-xl bg-bg border border-border text-sm text-white focus:outline-none focus:border-purple-500">
+                            </div>
+                            <div>
+                                <label class="text-xs text-gray-400 block mb-1">Ответ ученика</label>
+                                <textarea id="grader-answer" rows="4" placeholder="Вставьте ответ ученика..." class="w-full px-4 py-2.5 rounded-xl bg-bg border border-border text-sm text-white focus:outline-none focus:border-purple-500">Цикл while выполняется пока условие истинно. Например: x = 0; while x < 5: print(x) — он выведет числа от 0 до 4.</textarea>
+                            </div>
+                            <button onclick="runAIGrader()" id="btn-ai-grader" class="w-full py-3 rounded-xl brand-gradient brand-gradient-hover text-white font-semibold text-sm flex items-center justify-center gap-2">
+                                <i data-lucide="check-circle-2" class="w-4 h-4"></i> Проверить работу с ИИ
+                            </button>
+                        </div>
+
+                        <div id="grader-output" class="hidden p-4 rounded-2xl bg-bg border border-purple-500/40"></div>
+                    </div>
+
+                    <!-- Панель создания курса / загрузки видео -->
+                    <form onsubmit="publishTeacherVideo(event)" class="rounded-3xl bg-card border border-border p-6 space-y-4">
+                        <div class="flex items-center gap-2.5">
+                            <div class="w-10 h-10 rounded-xl bg-purple-500/20 text-purple-400 flex items-center justify-center">
+                                <i data-lucide="video" class="w-5 h-5"></i>
+                            </div>
+                            <div>
+                                <h2 class="text-lg font-display font-bold text-white">Загрузить видеоурок / курс</h2>
+                                <p class="text-xs text-gray-400">Урок сразу появится в разделе «Видеохостинг»</p>
+                            </div>
+                        </div>
+
+                        <div class="space-y-3">
+                            <div>
+                                <label class="text-xs text-gray-400 block mb-1">Название видеоурока</label>
+                                <input type="text" id="tv-title" required placeholder="Например: Алгоритмы сортировки на Python" class="w-full px-4 py-2.5 rounded-xl bg-bg border border-border text-sm text-white focus:outline-none focus:border-purple-500">
+                            </div>
+                            <div class="grid grid-cols-2 gap-3">
+                                <div>
+                                    <label class="text-xs text-gray-400 block mb-1">Предмет</label>
+                                    <select id="tv-subj" class="w-full px-4 py-2.5 rounded-xl bg-bg border border-border text-sm text-white focus:outline-none focus:border-purple-500">
+                                        <option>Информатика</option>
+                                        <option>Математика</option>
+                                        <option>Физика</option>
+                                        <option>История</option>
+                                        <option>Химия</option>
+                                        <option>Биология</option>
+                                        <option>Литература</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="text-xs text-gray-400 block mb-1">Уровень</label>
+                                    <select id="tv-level" class="w-full px-4 py-2.5 rounded-xl bg-bg border border-border text-sm text-white focus:outline-none focus:border-purple-500">
+                                        <option>Начальный</option>
+                                        <option>Средний</option>
+                                        <option>Продвинутый</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-2 gap-3">
+                                <div>
+                                    <label class="text-xs text-gray-400 block mb-1">Модули</label>
+                                    <input type="text" id="tv-mods" value="3 модуля" class="w-full px-4 py-2.5 rounded-xl bg-bg border border-border text-sm text-white focus:outline-none focus:border-purple-500">
+                                </div>
+                                <div>
+                                    <label class="text-xs text-gray-400 block mb-1">Длительность</label>
+                                    <input type="text" id="tv-dur" value="30 мин" class="w-full px-4 py-2.5 rounded-xl bg-bg border border-border text-sm text-white focus:outline-none focus:border-purple-500">
+                                </div>
+                            </div>
+                            <div>
+                                <label class="text-xs text-gray-400 block mb-1">Описание урока</label>
+                                <textarea id="tv-desc" rows="2" required placeholder="Кратко расскажите, чему научатся ученики..." class="w-full px-4 py-2.5 rounded-xl bg-bg border border-border text-sm text-white focus:outline-none focus:border-purple-500"></textarea>
+                            </div>
+                            <button type="submit" class="w-full py-3 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-semibold text-sm flex items-center justify-center gap-2 transition-colors">
+                                <i data-lucide="upload-cloud" class="w-4 h-4"></i> Опубликовать на платформе
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            `;
+        }
+
+        async function runAIGrader() {
+            const task = document.getElementById("grader-prompt").value.trim();
+            const answer = document.getElementById("grader-answer").value.trim();
+            if (!task || !answer) return;
+
+            const btn = document.getElementById("btn-ai-grader");
+            const out = document.getElementById("grader-output");
+            btn.disabled = true;
+            btn.innerHTML = `<i data-lucide="loader-2" class="w-4 h-4 animate-spin"></i> ИИ проверяет работу...`;
+            out.classList.remove("hidden");
+            out.innerHTML = `<p class="text-xs text-purple-300">Анализируем ответ ученика...</p>`;
+            lucide.createIcons();
+
+            try {
+                const prompt = `Проверь ответ ученика как опытный преподаватель.\nЗадание: ${task}\nОтвет ученика: ${answer}\n\nВыдай структурированный результат на русском языке:\n1. **Оценка** (по 5-балльной и 100-балльной шкале)\n2. **Что сделано хорошо**\n3. **Ошибки или неточности** (если есть)\n4. **Рекомендация ученику**`;
+                const feedback = await callGeminiAPI(prompt, "Ты — ИИ-ассистент преподавателя на платформе УчНейро.");
+                out.innerHTML = formatAIText(feedback);
+                showToast("Работа проверена нейросетью!", "success");
+            } catch (err) {
+                out.innerHTML = `<p class="text-xs text-rose-400">Не удалось выполнить проверку. Попробуйте снова.</p>`;
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = `<i data-lucide="check-circle-2" class="w-4 h-4"></i> Проверить работу с ИИ`;
+                lucide.createIcons();
+            }
+        }
+
+        function publishTeacherVideo(e) {
+            e.preventDefault();
+            const title = document.getElementById("tv-title").value.trim();
+            const subject = document.getElementById("tv-subj").value;
+            const level = document.getElementById("tv-level").value;
+            const modules = document.getElementById("tv-mods").value.trim() || "1 модуль";
+            const duration = document.getElementById("tv-dur").value.trim() || "25 мин";
+            const description = document.getElementById("tv-desc").value.trim();
+
+            state.videos.unshift({
+                id: "v_" + Date.now(),
+                section: "popular",
+                title,
+                subject,
+                modules,
+                duration,
+                level,
+                progress: 0,
+                author: state.user.name,
+                gradient: "from-purple-600 via-fuchsia-700 to-pink-800",
+                icon: "play-circle",
+                likes: 1,
+                dislikes: 0,
+                userVote: null,
+                description,
+                comments: []
+            });
+            state.teacherStats.views += 120;
+            state.teacherStats.income += 450;
+            saveState();
+            showToast(`Видеоурок «${title}» опубликован в Видеохостинге!`, "success");
+            e.target.reset();
+            renderCurrentTab();
+        }
+
+        /* ==========================================================================
+           11. УНИВЕРСАЛЬНЫЕ МОДАЛКИ, РАССЫЛКА И ИНИЦИАЛИЗАЦИЯ
+           ========================================================================== */
+        function openModal(htmlContent) {
+            const overlay = document.getElementById("modal-overlay");
+            const box = document.getElementById("modal-box");
+            box.innerHTML = htmlContent;
+            overlay.classList.remove("hidden");
+            overlay.classList.add("flex");
+            document.body.style.overflow = "hidden";
+            lucide.createIcons();
+        }
+
+        function closeModal() {
+            clearInterval(playerTimer);
+            isPlayingSim = false;
+            const overlay = document.getElementById("modal-overlay");
+            overlay.classList.add("hidden");
+            overlay.classList.remove("flex");
+            document.body.style.overflow = "";
+        }
+
+        function openInfoModal(title, text) {
+            openModal(`
+            <div class="p-6 space-y-4">
+                <div class="flex items-center justify-between">
+                    <h2 class="text-xl font-display font-bold text-white">${title}</h2>
+                    <button onclick="closeModal()" class="p-2 rounded-xl bg-bg border border-border text-gray-400 hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
+                </div>
+                <p class="text-sm text-gray-300 leading-relaxed">${text}</p>
+                <div class="flex justify-end">
+                    <button onclick="closeModal()" class="px-5 py-2 rounded-xl brand-gradient text-white text-sm font-semibold">Понятно</button>
+                </div>
+            </div>`);
+        }
+
+        function handleNewsletterSubmit(e) {
+            e.preventDefault();
+            const input = document.getElementById("newsletter-email");
+            showToast(`Спасибо! Вы подписались на рассылку (${input.value})`, "success");
+            input.value = "";
+        }
+
+        function resetDemoData() {
+            localStorage.removeItem(STORAGE_KEY);
+            state = structuredClone(DEFAULT_STATE);
+            updateRoleUI();
+            updateNavUI();
+            renderCurrentTab();
+            showToast("Демо-данные восстановлены", "info");
+        }
+
+        // Закрытие модалки по Escape
+        document.addEventListener("keydown", e => {
+            if (e.key === "Escape") closeModal();
+        });
+
+        // Инициализация приложения при загрузке
+        window.onload = function () {
+            updateRoleUI();
+            updateNavUI();
+            renderCurrentTab();
+        };
+    </script>
+</body>
+</html>
